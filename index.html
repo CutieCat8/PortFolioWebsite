@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Veerachit Mongkol</title>
+  <meta name="description" content="Personal portfolio of Veerachit Mongkol, Full Stack Developer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <header class="topbar" id="home">
+    <div class="brand">VEERACHIT MONGKOL</div>
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      <a href="#home">Home</a>
+      <a href="#work">Work</a>
+      <a href="#experience">Experience</a>
+      <a href="#about">About Me</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+    <a href="#home">Home</a>
+    <a href="#work">Work</a>
+    <a href="#experience">Experience</a>
+    <a href="#about">About Me</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <main>
+    <section class="hero" id="landing">
+      <div class="hero-image" role="img" aria-label="Portrait photo"></div>
+
+      <div class="hero-content">
+        <div class="hero-title-wrap">
+          <h1>
+            <span>My</span>
+            <span>Portfolio</span>
+          </h1>
+          <div class="title-line" aria-hidden="true"></div>
+        </div>
+
+        <p class="role role-main">&lt; FULL STACK DEV &gt;</p>
+        <p class="role role-sub">&lt;/ Back-End &gt;</p>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="exploreBtn">Explore Now</button>
+          <button class="btn btn-ghost" id="playBtn" aria-label="Play intro video">
+            <span class="play-icon">▶</span>
+            <span>Play Video</span>
+          </button>
+        </div>
+      </div>
+
+      <p class="page-mark">Page | 01</p>
+    </section>
+
+    <section class="services" id="work" aria-label="My work services">
+      <div class="services-top">
+        <div class="socials">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">YouTube</a>
+          <a href="https://x.com" target="_blank" rel="noopener noreferrer">Twitter</a>
+        </div>
+        <a class="top-email" href="mailto:sea3731548@gmail.com">sea3731548@gmail.com</a>
+      </div>
+
+      <div class="services-head">
+        <p class="tiny-title">My Services ?</p>
+        <h2>What I'm<br />Offering</h2>
+        <p class="services-lead">
+          I build complete web solutions with a strong focus on practical systems,
+          clean architecture, and long-term scalability.
+        </p>
+        <button class="btn all-service-btn" id="allServiceBtn">All Service</button>
+      </div>
+
+      <div class="services-body">
+        <div class="scroll-mark" aria-hidden="true">
+          <span>Scroll Down</span>
+          <div class="scroll-line"></div>
+          <div class="scroll-dot">↓</div>
+        </div>
+
+        <article class="service-card service-card-featured">
+          <p class="service-icon">⚙</p>
+          <h3>Full-stack</h3>
+          <button class="service-read" data-service="Full-stack">Read More →</button>
+        </article>
+
+        <article class="service-card">
+          <p class="service-icon">⌁</p>
+          <h3>Back-end</h3>
+          <button class="service-read" data-service="Back-end">Read More →</button>
+        </article>
+
+        <article class="service-card">
+          <p class="service-icon">◌</p>
+          <h3>DataSci</h3>
+          <button class="service-read" data-service="DataSci">Read More →</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="experience" id="experience" aria-label="Experience timeline">
+      <div class="experience-header">
+        <p class="experience-dot" aria-hidden="true">✺</p>
+        <h2>Experience</h2>
+        <p class="experience-intro">
+          Selected projects, international collaboration, and leadership roles focused on product delivery and innovation.
+        </p>
+      </div>
+
+      <div class="experience-layout" id="experienceLayout">
+        <div class="experience-list">
+          <article class="experience-item is-active" data-exp-id="smart-flema">
+            <div class="experience-main">
+              <span class="experience-number">1</span>
+              <div>
+                <h3>ICT Startup Competition 2026 - Smart Flema</h3>
+                <p>International College of Technology, Kanazawa</p>
+              </div>
+            </div>
+            <div class="experience-meta">
+              <p>Year · 2026</p>
+              <button class="experience-view" data-exp-id="smart-flema">View Details</button>
+            </div>
+          </article>
+
+          <article class="experience-item" data-exp-id="chiangmai-smartcity">
+            <div class="experience-main">
+              <span class="experience-number">2</span>
+              <div>
+                <h3>Project Manager - Chiang Mai Smart City</h3>
+                <p>CAMT CMU x CAS COGNISER (Thailand) Co., Ltd. · 2025</p>
+              </div>
+            </div>
+            <div class="experience-meta">
+              <p>Year · 2025</p>
+              <button class="experience-view" data-exp-id="chiangmai-smartcity">View Details</button>
+            </div>
+          </article>
+
+          <article class="experience-item" data-exp-id="agrilink">
+            <div class="experience-main">
+              <span class="experience-number">3</span>
+              <div>
+                <h3>Hylife Hackathon 2025 - AgriLink Smart Farm Marketplace</h3>
+                <p>CAMT CMU · 2025</p>
+              </div>
+            </div>
+            <div class="experience-meta">
+              <p>Year · 2025</p>
+              <button class="experience-view" data-exp-id="agrilink">View Details</button>
+            </div>
+          </article>
+        </div>
+
+        <aside class="experience-detail" id="experienceDetail" aria-live="polite">
+          <button class="detail-close" id="detailClose" aria-label="Close details">×</button>
+          <p class="detail-label">Project Details</p>
+          <h3 id="detailTitle">ICT Startup Competition 2026 - Smart Flema</h3>
+          <p class="detail-sub" id="detailSubtitle">International College of Technology, Kanazawa</p>
+
+          <h4>Role & Responsibilities</h4>
+          <ul id="detailResponsibilities"></ul>
+
+          <h4>Project Overview</h4>
+          <div id="detailOverview"></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="case-study" id="case-study" aria-label="Case study projects">
+      <div class="case-header">
+        <p class="case-pattern" aria-hidden="true">:::</p>
+        <h2>Case Study</h2>
+        <p>
+          Project showcase structure is ready. You can upload real screenshots for each project later.
+        </p>
+      </div>
+
+      <div class="case-list">
+        <article class="case-row">
+          <div class="case-image has-images" id="case-image-smart-flema">
+            <div class="case-image-grid case-image-grid-single">
+              <img src="assets/JapanCompett.png" alt="ICT Startup Competition 2026 Smart Flema project screenshot" />
+            </div>
+            <small>ICT Startup Competition 2026 - Smart Flema</small>
+          </div>
+          <div class="case-content">
+            <p class="case-pill">Web Platform</p>
+            <h3>ICT Startup Competition 2026 - Smart Flema</h3>
+            <button class="case-detail-btn" data-target="smart-flema">See Details ↗</button>
+          </div>
+        </article>
+
+        <article class="case-row case-row-reverse">
+          <div class="case-image has-images" id="case-image-chiangmai">
+            <div class="case-image-grid">
+              <img src="assets/CCTVWEB.png" alt="Chiang Mai Smart City officer dashboard screenshot" />
+              <img src="assets/CCTVWEBCTZ.png" alt="Chiang Mai Smart City citizen dashboard screenshot" />
+            </div>
+            <small>Project Manager - Chiang Mai Smart City</small>
+          </div>
+          <div class="case-content">
+            <p class="case-pill">Smart City Dashboard</p>
+            <h3>Project Manager - Chiang Mai Smart City</h3>
+            <button class="case-detail-btn" data-target="chiangmai-smartcity">See Details ↗</button>
+          </div>
+        </article>
+
+        <article class="case-row">
+          <div class="case-image has-images" id="case-image-agrilink">
+            <div class="case-image-grid case-image-grid-single">
+              <img src="assets/AgriLink.png" alt="Hylife Hackathon 2025 AgriLink marketplace screenshot" />
+            </div>
+            <small>Hylife Hackathon 2025 - AgriLink Smart Farm Marketplace</small>
+          </div>
+          <div class="case-content">
+            <p class="case-pill">Marketplace System</p>
+            <h3>Hylife Hackathon 2025 - AgriLink Smart Farm Marketplace</h3>
+            <button class="case-detail-btn" data-target="agrilink">See Details ↗</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="reach" id="reach" aria-label="Contact inquiry form">
+      <div class="reach-header">
+        <h2><span>Say Hi!</span> and tell me about your idea</h2>
+        <p>Have a nice work? Reach out and let's chat.</p>
+      </div>
+
+      <form class="reach-form" id="reachForm">
+        <div class="reach-grid-two">
+          <label class="field">
+            <span>Name.*</span>
+            <input type="text" name="name" placeholder="Hello..." required />
+          </label>
+
+          <label class="field">
+            <span>Email.*</span>
+            <input type="email" name="email" placeholder="Where can I reply" required />
+          </label>
+        </div>
+
+        <label class="field field-full">
+          <span>Company name</span>
+          <input type="text" name="company" placeholder="Your company or website?" />
+        </label>
+
+        <div class="field field-full">
+          <span>What's in your mind?*</span>
+          <div class="tag-pills" id="tagPills">
+            <button type="button" class="tag-pill">Mobile App</button>
+            <button type="button" class="tag-pill">Website Design</button>
+            <button type="button" class="tag-pill">Branding</button>
+            <button type="button" class="tag-pill">Webflow Development</button>
+            <button type="button" class="tag-pill">App Design</button>
+            <button type="button" class="tag-pill">Graphic Design</button>
+            <button type="button" class="tag-pill">WordPress</button>
+          </div>
+        </div>
+
+        <div class="reach-action">
+          <button class="btn reach-send" type="submit" id="reachSendBtn">Send Me</button>
+          <p>I'll get back to you within 24 hours.</p>
+        </div>
+      </form>
+
+      <footer class="reach-footer">
+        <div class="reach-links">
+          <a href="#">Dribbble</a>
+          <a href="#">LinkedIn</a>
+          <a href="#">Instagram</a>
+          <a href="#">Behance</a>
+        </div>
+        <p>Personal portfolio ©2026</p>
+      </footer>
+    </section>
+
+    <section class="about-contact" id="about" aria-label="About and contact">
+      <div class="about-left">
+        <h2 class="about-name">VEERACHIT<br />MONGKOL</h2>
+        <p class="about-role-line">Web Developer / Designer</p>
+
+        <div class="contact-block" id="contact">
+          <p>For business inquiries, email me at <a href="mailto:sea3731548@gmail.com">sea3731548@gmail.com</a></p>
+          <p>Phone: <a href="tel:0983731548">098-373-1548</a></p>
+          <p>GitHub: <a href="https://github.com/CutieCat8" target="_blank" rel="noopener noreferrer">github.com/CutieCat8</a></p>
+          <p>Medium: <a href="https://medium.com/@sea3731548" target="_blank" rel="noopener noreferrer">medium.com/@sea3731548</a></p>
+        </div>
+
+        <div class="motivation-block">
+          <h3>Motivation</h3>
+          <p>
+            I am a first-year Digital Industry Integration student at CAMT, Chiang Mai University.
+            I enjoy building full-stack projects and exploring practical software engineering workflows.
+            My current focus is to improve technical depth and design execution through real project work.
+          </p>
+        </div>
+      </div>
+
+      <div class="about-right">
+        <div class="about-me-block">
+          <h3>About Me</h3>
+          <p>
+            This portfolio showcases selected academic projects, UI concepts, and technical work from my studies.
+            Each case highlights my role, tools, and outcomes while reflecting my growth in full-stack development,
+            UX thinking, and product execution.
+          </p>
+        </div>
+
+        <div class="about-mini-frame">
+          <img src="assets/Last Profile.png" alt="Last profile image" />
+        </div>
+        <p class="about-page-mark">Page | 02</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="video-modal" id="videoModal" aria-hidden="true" role="dialog" aria-label="Video dialog">
+    <div class="video-modal-card">
+      <button class="close-modal" id="closeModal" aria-label="Close video">×</button>
+      <h3>Demo Video</h3>
+      <p>A real video is not added yet. This button is ready to link to your own video file or YouTube URL.</p>
+      <a class="btn btn-primary" href="https://www.youtube.com" target="_blank" rel="noopener noreferrer">Open YouTube</a>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
