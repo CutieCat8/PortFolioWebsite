@@ -214,10 +214,12 @@ img {
   background: var(--ink);
   color: var(--white);
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(330px, 0.7fr);
+  grid-template-columns: minmax(390px, 44fr) minmax(0, 56fr);
+  grid-template-areas: "portrait copy";
 }
 
 .hero-copy {
+  grid-area: copy;
   padding: clamp(72px, 10vw, 148px) var(--gutter) 48px;
   display: flex;
   flex-direction: column;
@@ -254,9 +256,9 @@ img {
 }
 
 .hero h1 {
-  max-width: 930px;
+  max-width: 760px;
   margin: clamp(60px, 10vh, 118px) 0 24px;
-  font-size: clamp(3.2rem, 8vw, 8.4rem);
+  font-size: clamp(3.2rem, 6.8vw, 7.2rem);
   line-height: 0.89;
   letter-spacing: -0.075em;
   font-weight: 700;
@@ -382,9 +384,12 @@ img {
 }
 
 .hero-portrait {
-  padding: clamp(38px, 6vw, 80px) clamp(24px, 4vw, 56px);
-  background: var(--accent-surface);
-  color: var(--accent-ink);
+  grid-area: portrait;
+  padding: clamp(32px, 4vw, 64px) clamp(24px, 3vw, 46px);
+  background:
+    linear-gradient(180deg, rgba(122, 62, 72, 0.045), transparent 38%),
+    var(--paper-deep);
+  color: var(--ink);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -392,7 +397,7 @@ img {
 
 .portrait-frame {
   position: relative;
-  border: 1px solid rgba(255, 253, 247, 0.55);
+  border: 1px solid rgba(17, 17, 15, 0.28);
   padding: 10px;
 }
 
@@ -403,8 +408,8 @@ img {
   height: 48px;
   top: -14px;
   right: -14px;
-  border-top: 2px solid var(--accent-ink);
-  border-right: 2px solid var(--accent-ink);
+  border-top: 2px solid var(--accent-dark);
+  border-right: 2px solid var(--accent-dark);
 }
 
 .portrait-frame img {
@@ -426,9 +431,20 @@ img {
   text-transform: uppercase;
 }
 
+.portrait-frame p span:first-child {
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.portrait-frame p span:last-child {
+  color: var(--muted);
+}
+
 .portrait-note {
   max-width: 440px;
   margin: 26px 0 0;
+  padding-top: 18px;
+  border-top: 2px solid var(--accent-dark);
   font-weight: 600;
   line-height: 1.55;
 }
@@ -1074,11 +1090,11 @@ img {
 
 @media (max-width: 1020px) {
   .hero {
-    grid-template-columns: minmax(0, 1.2fr) minmax(290px, 0.7fr);
+    grid-template-columns: minmax(340px, 42fr) minmax(0, 58fr);
   }
 
   .hero h1 {
-    font-size: clamp(3.2rem, 8.5vw, 6rem);
+    font-size: clamp(3rem, 7.2vw, 5.4rem);
   }
 
   .hero-facts {
@@ -1143,6 +1159,9 @@ img {
   .hero {
     min-height: auto;
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "portrait";
   }
 
   .hero-copy {
