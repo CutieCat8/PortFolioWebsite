@@ -1,289 +1,455 @@
-const mobileNav = document.getElementById("mobileNav");
-const menuToggle = document.getElementById("menuToggle");
-const exploreBtn = document.getElementById("exploreBtn");
-const playBtn = document.getElementById("playBtn");
-const closeModal = document.getElementById("closeModal");
-const videoModal = document.getElementById("videoModal");
-const toast = document.getElementById("toast");
-const allServiceBtn = document.getElementById("allServiceBtn");
-const servicesBody = document.querySelector(".services-body");
-const serviceCards = document.querySelectorAll(".service-card");
-const experienceLayout = document.getElementById("experienceLayout");
-const experienceItems = document.querySelectorAll(".experience-item");
-const experienceViewButtons = document.querySelectorAll(".experience-view");
-const detailClose = document.getElementById("detailClose");
-const detailTitle = document.getElementById("detailTitle");
-const detailSubtitle = document.getElementById("detailSubtitle");
-const detailResponsibilities = document.getElementById("detailResponsibilities");
-const detailOverview = document.getElementById("detailOverview");
-const caseDetailButtons = document.querySelectorAll(".case-detail-btn");
-const reachForm = document.getElementById("reachForm");
-const tagPills = document.querySelectorAll(".tag-pill");
-let selectedExperienceId = "smart-flema";
-let hoveredExperienceId = null;
-
-const experienceData = {
-  "smart-flema": {
-    title: "ICT Startup Competition 2026 - Smart Flema",
-    subtitle: "International College of Technology, Kanazawa",
+const projects = [
+  {
+    id: "ditc-cat",
+    title: "DITC CAT",
+    subtitle: "Voice AI Interactive Assistant",
+    shortDescription: "A voice-first assistant that retrieves grounded DITC and CAMT information through a real-time character interface.",
+    problem: "DITC and CAMT information is distributed across institutional sources, making it difficult to find through a natural, conversational interaction.",
+    projectScope: "A functional academic voice-AI system covering a character interface, streaming audio bridge, knowledge retrieval, and an authenticated administration workflow.",
+    role: "Lead Full-Stack & AI Developer",
     responsibilities: [
-      "Selected as a representative from CAMT, Chiang Mai University.",
-      "Collaborated with international team members to develop a startup-oriented technology solution.",
-      "Contributed to front-end, full-stack, UX, and business-focused product design."
+      "Developed the FastAPI WebSocket audio bridge for multi-turn Gemini Live conversations.",
+      "Built the React character interface and managed microphone and session lifecycles to reduce audio feedback.",
+      "Created the CAMT and DITC knowledge pipeline and an authenticated administration workflow."
     ],
-    overview: [
-      "This academic prototype was inspired by smart city initiatives to improve urban crowd management and public safety through CCTV and IoT integration.",
-      "The system uses computer vision to detect congestion in places such as markets, festivals, and transport hubs. When overcrowding is detected, officers receive actionable alerts to redirect traffic flow, open alternative routes, or deploy support resources.",
-      "The platform includes two interfaces: an Officer Dashboard with real-time crowd analytics, heatmaps, and automated alerts; and a Citizen Dashboard with live CCTV feeds, safety notifications, and event information.",
-      "The prototype demonstrates how CCTV and IoT data can be transformed into intelligent crowd-management tools for safer and more efficient urban experiences."
-    ]
+    technicalImplementation: [
+      "Combined semantic vector retrieval with keyword search over a PostgreSQL and pgvector knowledge base.",
+      "Implemented character conversation states and lip synchronization driven by streaming audio and viseme fallbacks.",
+      "Protected knowledge-base management and conversation analytics with JWT-based admin access."
+    ],
+    technologies: ["Python", "FastAPI", "React", "PostgreSQL", "pgvector", "Gemini Live", "WebSocket"],
+    status: "Completed academic prototype",
+    statusLabel: "Completed Prototype",
+    teamType: "Primary Contributor",
+    year: "2026",
+    repository: "https://github.com/CutieCat8/AI-Chatbot-Character-DITC-",
+    demo: null,
+    images: [],
+    featured: true,
+    categories: ["full-stack", "back-end", "ai-cv", "leadership"],
+    currentStatus: "The end-to-end voice, retrieval, character, and admin workflows are functional as an academic system. No production deployment or usage volume is claimed.",
+    visualCode: "VOICE / RAG"
   },
-  "chiangmai-smartcity": {
-    title: "Project Manager - Chiang Mai Smart City",
-    subtitle: "CAMT CMU x CAS COGNISER (THAILAND) COMPANY LIMITED · 2025",
+  {
+    id: "dear-days",
+    title: "Dear Days",
+    subtitle: "Private Memory Diary with 3D Museum",
+    shortDescription: "A private shared-memory platform with secure media workflows, relationship-based access, and an interactive 3D museum.",
+    problem: "People need a private space to preserve and revisit shared memories without exposing personal media or relationships publicly.",
+    projectScope: "A completed team project spanning authentication, memories, rooms, friendships, private storage, readers, and a 3D presentation layer.",
+    role: "Full-Stack Developer / Primary Contributor",
     responsibilities: [
-      "Designed and implemented both officer and citizen interfaces, including real-time traffic analysis, violation detection, public CCTV access, safety updates, complaints, and city events.",
-      "Developed front-end UI/UX and back-end services, integrated IoT data from CCTV and sensors, and deployed the platform on the web.",
-      "Led planning and coordination for the CCTV monitoring dashboard prototype."
+      "Developed the Supabase-backed data layer, schema migrations, and workflows for memories, rooms, friendships, and media.",
+      "Built private profile-media flows and contributed friend, room, monthly, yearbook, and highlight interactions.",
+      "Implemented the interactive 3D museum and memory-to-frame assignment workflow as part of a team project."
     ],
-    overview: [
-      "This project is an academic prototype aligned with Chiang Mai Municipality's smart city concept.",
-      "The goal was to design and build a Smart City CCTV Monitoring Dashboard that improves traffic management, public safety, and citizen engagement through data-driven systems.",
-      "The platform includes an Officer Dashboard for municipal staff and a Citizen Dashboard for city information, complaints, and public relations.",
-      "The system shows how CCTV and IoT data can become actionable insights for authorities while delivering practical value to everyday citizens."
-    ]
+    technicalImplementation: [
+      "Used Row Level Security and private storage policies to constrain access to personal and room media.",
+      "Tightened database privileges and used database functions for multi-step writes that must succeed together.",
+      "Separated application contracts from mock and Supabase data adapters to support testable integration."
+    ],
+    technologies: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "React Three Fiber"],
+    status: "Completed project",
+    statusLabel: "Completed",
+    teamType: "Team Project",
+    year: "2026",
+    repository: "https://github.com/CutieCat8/Dear-Days",
+    demo: null,
+    images: [],
+    featured: true,
+    categories: ["full-stack", "back-end"],
+    currentStatus: "Completed as a team project. Contributions are described by area and do not imply sole ownership of the entire application.",
+    visualCode: "DATA / 3D"
   },
-  agrilink: {
-    title: "Hylife Hackathon 2025 - AgriLink Smart Farm Marketplace",
-    subtitle: "CAMT CMU · 2025",
+  {
+    id: "lampang-smart-city",
+    title: "Smart City Management Platform",
+    subtitle: "Lampang Municipality",
+    shortDescription: "Back-end reporting workflows and a people-counting component prepared for a municipal smart-city collaboration.",
+    problem: "Municipal safety reporting needs structured incident data, useful comparisons, and camera analytics that can be calibrated for each source.",
+    projectScope: "An in-development collaboration between CAMT, Lampang Municipality, and Pyramid Solution, covering reporting APIs and a planned computer-vision integration.",
+    role: "Back-End & Computer Vision Developer",
     responsibilities: [
-      "Initiated and co-developed the core idea and solution for an agrilink platform addressing transparency issues in Thailand's agricultural market.",
-      "Designed and developed front-end UI, user flows, and interaction features for a farm-to-buyer marketplace.",
-      "Contributed to project direction and feature strategy during hackathon execution."
+      "Developed database structures and REST API endpoints for safety reports.",
+      "Built monthly summaries and event comparisons for an officer reporting interface.",
+      "Developed a Python and YOLOv8 line-crossing counter with configurable sources and counting coordinates."
     ],
-    overview: [
-      "AgriLink is a hackathon-based academic prototype designed to improve transparency, fairness, and efficiency in Thailand's agricultural supply chain.",
-      "It addresses key challenges such as middleman-driven price suppression, limited traceability, and high post-harvest losses.",
-      "The platform connects farms directly with buyers through a transparent digital marketplace, supported by smart logistics and quality assurance.",
-      "Core capabilities include digital farm profiles, QR-based traceability, and AI-powered cold-chain logistics to improve food safety, freshness, and trust.",
-      "The solution demonstrates how AI, IoT, and data-driven platforms can reduce post-harvest losses, improve market access for farmers, and support informed purchasing decisions."
-    ]
+    technicalImplementation: [
+      "Prepared RTSP source configuration and coordinate-based line counting for planned integration.",
+      "Used development footage to investigate camera-angle and coordinate-calibration constraints.",
+      "Kept reporting APIs and computer-vision processing as separately testable responsibilities."
+    ],
+    technologies: ["Python", "YOLOv8", "REST API", "Database Design", "RTSP"],
+    status: "Project under development",
+    statusLabel: "In Development",
+    teamType: "Municipal Collaboration",
+    year: "2026",
+    repository: null,
+    demo: null,
+    images: [],
+    featured: true,
+    categories: ["back-end", "ai-cv"],
+    currentStatus: "The municipal CCTV API and live camera feed have not been provided. The people-counting component is prepared for planned integration and has been evaluated with development footage only.",
+    visualCode: "API / CV"
+  },
+  {
+    id: "crowdlens",
+    title: "CrowdLens",
+    subtitle: "Real-Time Crowd Monitoring Demo",
+    shortDescription: "A standalone webcam demonstration for people counting, line crossing, live monitoring, and opt-in LINE alerts.",
+    problem: "The Lampang collaboration did not provide a municipal CCTV API or live feed in time for demonstration, so a self-contained proof of the workflow was needed.",
+    projectScope: "An independently developed live demonstration presented at CAMT Job Fair using a local webcam rather than municipal infrastructure.",
+    role: "Independent Developer",
+    responsibilities: [
+      "Built the project independently from webcam capture through monitoring and alerts.",
+      "Implemented person detection, line-crossing counts, and a live monitoring dashboard.",
+      "Added opt-in LINE notifications for crowd-density events and resolved Windows webcam capture issues."
+    ],
+    technicalImplementation: [
+      "Used YOLOv8 and OpenCV to process webcam frames and track detected people.",
+      "Prevented the same track from being counted repeatedly across frames.",
+      "Connected density events to the LINE Messaging API for subscribed notifications."
+    ],
+    technologies: ["Python", "YOLOv8", "OpenCV", "LINE Messaging API"],
+    status: "Completed live demonstration",
+    statusLabel: "Live Demo",
+    teamType: "Independent Project",
+    year: "2026",
+    repository: "https://github.com/CutieCat8/CrowdLens",
+    demo: null,
+    images: [],
+    featured: true,
+    categories: ["ai-cv"],
+    currentStatus: "Completed as a standalone webcam demonstration. It is separate from the Lampang platform and is not connected to municipal cameras.",
+    visualCode: "YOLO / LIVE"
+  },
+  {
+    id: "classsync",
+    title: "ClassSync",
+    subtitle: "Student & Instructor Coordination Platform",
+    shortDescription: "A role-based front-end prototype that brings coursework, submissions, announcements, and appointment availability into one flow.",
+    problem: "Course information, assignments, and appointments are spread across multiple channels, making coordination difficult for students and instructors.",
+    projectScope: "A functional front-end prototype, previously named TMA Dashboard, with local and mock data rather than production authentication or a deployed back end.",
+    role: "Creator & Front-End Developer",
+    responsibilities: [
+      "Built role-based student and instructor interfaces.",
+      "Combined announcements, assignments, submission status, and appointments.",
+      "Implemented recurring schedules, pre-booking availability checks, submission verification, and reasoned override records."
+    ],
+    technicalImplementation: [
+      "Created pure recurrence and conflict-detection logic that reports Busy or Available before an appointment is created.",
+      "Structured front-end state for course schedules and role-specific workflows.",
+      "Added automated tests around core scheduling behavior with Vitest."
+    ],
+    technologies: ["React", "Vite", "Tailwind CSS", "Vitest"],
+    status: "Functional front-end prototype",
+    statusLabel: "Front-End Prototype",
+    teamType: "Creator",
+    year: "2026",
+    repository: "https://github.com/CutieCat8/ClassSync",
+    demo: null,
+    images: [],
+    featured: true,
+    categories: ["full-stack"],
+    currentStatus: "The front-end workflows are functional. Authentication and persistence are mock or local and are not presented as a production back end.",
+    visualCode: "LOGIC / UI"
+  },
+  {
+    id: "aeris",
+    title: "AERIS",
+    subtitle: "Flight Booking Platform",
+    shortDescription: "A course project focused on booking business logic, seat validation, simulated checkout, and e-ticket generation.",
+    problem: "A flight-booking flow must keep prices and seat availability authoritative at the server when users move from search to checkout.",
+    projectScope: "A completed full-stack course project covering authentication, round-trip selection, seats, simulated payment, booking records, and e-tickets.",
+    role: "Full-Stack Developer",
+    responsibilities: [
+      "Implemented authentication and the round-trip flight selection and checkout flow.",
+      "Built seat selection, simulated payment, and e-ticket generation.",
+      "Developed server-side confirmation logic that re-checks price and seat availability before creating a booking."
+    ],
+    technicalImplementation: [
+      "Used Express services and SQLite persistence behind JWT-protected account workflows.",
+      "Recalculated booking totals from database values rather than trusting browser state.",
+      "Returned a conflict response when a selected seat was no longer available."
+    ],
+    technologies: ["Node.js", "Express", "SQLite", "JWT", "JavaScript"],
+    status: "Completed course project",
+    statusLabel: "Completed",
+    teamType: "Course Project",
+    year: "2026",
+    repository: "https://github.com/CutieCat8/FlightBooking_Project",
+    demo: null,
+    images: [],
+    featured: true,
+    categories: ["full-stack", "back-end"],
+    currentStatus: "Completed as a course project. Payment is simulated; no production payment or booking provider is connected.",
+    visualCode: "BOOK / API"
+  },
+  {
+    id: "chiang-mai-smart-city",
+    title: "Chiang Mai Smart City",
+    subtitle: "CCTV Monitoring Dashboard",
+    shortDescription: "An academic officer and citizen dashboard prototype shaped around limited partner-provided violation imagery and metadata.",
+    problem: "City officers and residents need clearer workflows for reviewing events and understanding how municipal information could be presented.",
+    projectScope: "An academic prototype developed through CAMT and CAS Cogniser Thailand. The connected data was limited to violation images and selected metadata.",
+    role: "Idea Initiator, Project Manager & Developer",
+    responsibilities: [
+      "Initiated the concept, managed project scope, and defined officer and citizen workflows.",
+      "Developed React and TypeScript event-review and live-monitoring modules.",
+      "Connected a limited partner webhook and transformed violation imagery and equipment metadata for display."
+    ],
+    technicalImplementation: [
+      "Mapped incoming webhook records into reviewable dashboard events.",
+      "Separated the limited partner data from prototype traffic, public-camera, and civic information datasets.",
+      "Built responsive dashboard modules with React, TypeScript, routing, and chart components."
+    ],
+    technologies: ["React", "TypeScript", "Vite", "Webhook", "Recharts"],
+    status: "Academic prototype",
+    statusLabel: "Academic Prototype",
+    teamType: "Leadership",
+    year: "2025",
+    repository: "https://github.com/CutieCat8/CCTV-Monitoring-Dashboard",
+    demo: null,
+    images: [{src: "assets/CCTVWEB.png", alt: "Officer dashboard interface from the Chiang Mai Smart City academic prototype"}],
+    featured: false,
+    categories: ["full-stack", "leadership"],
+    currentStatus: "Only violation images and selected metadata came from the partner webhook. Traffic information, public CCTV views, and other city data are mock prototype data; the system is not presented as deployed municipal software.",
+    visualCode: "LEAD / UI"
+  },
+  {
+    id: "smart-flema",
+    title: "Smart-FLEMA",
+    subtitle: "ICT Startup Competition 2026",
+    shortDescription: "An international smart-city business concept exploring crowd management and public-safety workflows.",
+    problem: "Large public events need clearer ways to anticipate crowd pressure and coordinate safer movement through shared urban spaces.",
+    projectScope: "A hackathon concept developed with an international team at the International College of Technology in Kanazawa, Japan.",
+    role: "CAMT Representative & Idea Contributor",
+    responsibilities: [
+      "Collaborated with international team members on a smart-city business idea.",
+      "Helped define the problem, proposed user workflows, and feasibility considerations.",
+      "Contributed to the final pitch and presentation."
+    ],
+    technicalImplementation: [
+      "The concept proposed crowd-management and public-safety workflows.",
+      "The idea explored how future data sources might support operational decisions.",
+      "No computer-vision system, dashboard, IoT integration, heatmap, or alerting software was implemented."
+    ],
+    technologies: ["Problem Framing", "User Flows", "Business Concept", "Pitching"],
+    status: "Hackathon concept only",
+    statusLabel: "Hackathon Concept",
+    teamType: "International Team",
+    year: "2026",
+    repository: null,
+    demo: null,
+    images: [{src: "assets/JapanCompett.png", alt: "Veerachit and team presenting at the ICT Startup Competition 2026 in Kanazawa"}],
+    featured: false,
+    categories: ["leadership"],
+    currentStatus: "Concept and pitch only. There was no functional software prototype, production system, or live data integration.",
+    visualCode: "IDEA / PITCH"
+  },
+  {
+    id: "agrilink",
+    title: "AgriLink",
+    subtitle: "Smart Farm Marketplace",
+    shortDescription: "A hackathon marketplace concept designed to connect farmers and buyers through clearer digital flows.",
+    problem: "Farmers and buyers face fragmented market access and limited transparency across agricultural transactions.",
+    projectScope: "A Hylife Hackathon 2025 — Code for Change concept and interface prototype focused on marketplace direction and user journeys.",
+    role: "Front-End Developer & Idea Initiator",
+    responsibilities: [
+      "Initiated and co-developed the marketplace concept connecting farmers with buyers.",
+      "Designed front-end UI, user flows, and interactions.",
+      "Contributed to product direction and feature strategy during the hackathon."
+    ],
+    technicalImplementation: [
+      "Translated the marketplace concept into navigable front-end flows.",
+      "Focused implemented work on interface structure and interactions.",
+      "AI, IoT, QR traceability, and cold-chain logistics remain proposed ideas unless separately evidenced."
+    ],
+    technologies: ["Front-End UI", "User Flows", "Product Strategy", "Prototyping"],
+    status: "Hackathon concept / prototype",
+    statusLabel: "Hackathon Prototype",
+    teamType: "Team Project",
+    year: "2025",
+    repository: null,
+    demo: null,
+    images: [{src: "assets/AgriLink.png", alt: "AgriLink marketplace interface created for Hylife Hackathon 2025"}],
+    featured: false,
+    categories: ["full-stack", "leadership"],
+    currentStatus: "The verified work covers the concept, interface, flows, and interactions. Proposed AI, IoT, traceability, or logistics capabilities are not presented as implemented.",
+    visualCode: "IDEA / UI"
   }
+];
+
+const projectGrid = document.getElementById("projectGrid");
+const experienceList = document.getElementById("experienceList");
+const filterStatus = document.getElementById("filterStatus");
+const caseDialog = document.getElementById("caseDialog");
+const dialogContent = document.getElementById("dialogContent");
+const menuToggle = document.getElementById("menuToggle");
+const mobileNav = document.getElementById("mobileNav");
+let activeFilter = "all";
+
+const escapeHtml = (value) => String(value)
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;")
+  .replaceAll("'", "&#039;");
+
+const renderTags = (technologies, limit) => technologies
+  .slice(0, limit)
+  .map((technology) => `<li>${escapeHtml(technology)}</li>`)
+  .join("");
+
+const renderProjectVisual = (project) => {
+  if (project.images.length) {
+    const image = project.images[0];
+    return `<div class="project-visual project-visual-image"><img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt)}" loading="lazy" /></div>`;
+  }
+
+  const parts = project.visualCode.split(" / ");
+  return `
+    <div class="project-visual project-visual-type" aria-hidden="true">
+      <span>${escapeHtml(parts[0])}</span><span>${escapeHtml(parts[1] || "BUILD")}</span>
+      <i>${escapeHtml(project.year)}</i>
+    </div>`;
 };
 
-const showToast = (text) => {
-  toast.textContent = text;
-  toast.classList.add("show");
-  clearTimeout(showToast.timeoutId);
-  showToast.timeoutId = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 1700);
+const linkMarkup = (project, compact = false) => {
+  const links = [];
+  if (project.repository) {
+    links.push(`<a class="text-link" href="${escapeHtml(project.repository)}" target="_blank" rel="noopener noreferrer" aria-label="View ${escapeHtml(project.title)} repository on GitHub">GitHub <span aria-hidden="true">↗</span></a>`);
+  }
+  if (project.demo) {
+    links.push(`<a class="text-link" href="${escapeHtml(project.demo)}" target="_blank" rel="noopener noreferrer" aria-label="Open live demo for ${escapeHtml(project.title)}">Live Demo <span aria-hidden="true">↗</span></a>`);
+  }
+  return links.length ? `<div class="${compact ? "card-links" : "dialog-links"}">${links.join("")}</div>` : "";
+};
+
+const projectCard = (project, index) => `
+  <article class="project-card ${index < 2 ? "project-card-large" : ""}" data-categories="${project.categories.join(" ")}">
+    ${renderProjectVisual(project)}
+    <div class="project-card-body">
+      <div class="badge-row"><span class="badge badge-status">${escapeHtml(project.statusLabel)}</span><span class="badge">${escapeHtml(project.teamType)}</span></div>
+      <p class="project-number">0${index + 1} / ${escapeHtml(project.year)}</p>
+      <h3>${escapeHtml(project.title)}</h3>
+      <p class="project-subtitle">${escapeHtml(project.subtitle)}</p>
+      <p class="project-summary">${escapeHtml(project.shortDescription)}</p>
+      <p class="project-role"><span>Role</span>${escapeHtml(project.role)}</p>
+      <ul class="tech-list" aria-label="Technologies">${renderTags(project.technologies, 5)}</ul>
+      <div class="project-actions">
+        <button class="text-link case-study-button" type="button" data-project-id="${escapeHtml(project.id)}">View Case Study <span aria-hidden="true">→</span></button>
+        ${linkMarkup(project, true)}
+      </div>
+    </div>
+  </article>`;
+
+const experienceCard = (project, index) => `
+  <article class="experience-item">
+    <div class="experience-order">0${index + 1}</div>
+    <div class="experience-content">
+      <div class="badge-row"><span class="badge badge-status">${escapeHtml(project.statusLabel)}</span><span class="badge">${escapeHtml(project.teamType)}</span></div>
+      <h3>${escapeHtml(project.title)}</h3>
+      <p class="experience-subtitle">${escapeHtml(project.subtitle)} · ${escapeHtml(project.year)}</p>
+      <p>${escapeHtml(project.shortDescription)}</p>
+    </div>
+    <div class="experience-role"><span>Role</span><p>${escapeHtml(project.role)}</p></div>
+    <button class="round-button case-study-button" type="button" data-project-id="${escapeHtml(project.id)}" aria-label="View ${escapeHtml(project.title)} case study">↗</button>
+  </article>`;
+
+const renderProjects = () => {
+  const featured = projects.filter((project) => project.featured && (activeFilter === "all" || project.categories.includes(activeFilter)));
+  projectGrid.innerHTML = featured.map(projectCard).join("");
+  filterStatus.textContent = `${featured.length} project${featured.length === 1 ? "" : "s"} shown.`;
+};
+
+const renderExperience = () => {
+  experienceList.innerHTML = projects.filter((project) => !project.featured).map(experienceCard).join("");
+};
+
+const listMarkup = (items) => `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+
+const openCaseStudy = (projectId) => {
+  const project = projects.find((item) => item.id === projectId);
+  if (!project) return;
+
+  dialogContent.innerHTML = `
+    <header class="dialog-header">
+      <div class="badge-row"><span class="badge badge-status">${escapeHtml(project.statusLabel)}</span><span class="badge">${escapeHtml(project.teamType)}</span></div>
+      <h2 id="dialogTitle">${escapeHtml(project.title)}</h2>
+      <p class="dialog-subtitle">${escapeHtml(project.subtitle)}</p>
+      <p class="dialog-role">${escapeHtml(project.role)} · ${escapeHtml(project.year)}</p>
+    </header>
+    <div class="dialog-grid">
+      <section><p class="dialog-label">Problem</p><p>${escapeHtml(project.problem)}</p></section>
+      <section><p class="dialog-label">Project Scope</p><p>${escapeHtml(project.projectScope)}</p></section>
+      <section><p class="dialog-label">My Contribution</p>${listMarkup(project.responsibilities)}</section>
+      <section><p class="dialog-label">Technical Implementation</p>${listMarkup(project.technicalImplementation)}</section>
+      <section class="dialog-status"><p class="dialog-label">Current Status</p><p>${escapeHtml(project.currentStatus)}</p></section>
+      <section><p class="dialog-label">Technologies</p><ul class="tech-list">${renderTags(project.technologies, project.technologies.length)}</ul></section>
+      <section><p class="dialog-label">Links</p>${linkMarkup(project) || "<p>No public repository or live demo is listed for this project.</p>"}</section>
+    </div>`;
+
+  caseDialog.showModal();
+  document.body.classList.add("dialog-open");
+  document.getElementById("dialogClose").focus();
+};
+
+document.getElementById("projectFilters").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-filter]");
+  if (!button) return;
+  activeFilter = button.dataset.filter;
+  document.querySelectorAll(".filter-button").forEach((filterButton) => {
+    const isActive = filterButton === button;
+    filterButton.classList.toggle("is-active", isActive);
+    filterButton.setAttribute("aria-pressed", String(isActive));
+  });
+  renderProjects();
+});
+
+document.addEventListener("click", (event) => {
+  const trigger = event.target.closest(".case-study-button");
+  if (trigger) openCaseStudy(trigger.dataset.projectId);
+});
+
+document.getElementById("dialogClose").addEventListener("click", () => caseDialog.close());
+caseDialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
+caseDialog.addEventListener("click", (event) => {
+  const rect = caseDialog.getBoundingClientRect();
+  const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
+  if (!inside) caseDialog.close();
+});
+
+const closeMobileNav = () => {
+  mobileNav.classList.remove("is-open");
+  mobileNav.setAttribute("aria-hidden", "true");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.setAttribute("aria-label", "Open navigation");
 };
 
 menuToggle.addEventListener("click", () => {
-  const isOpen = mobileNav.classList.toggle("open");
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
-});
-
-document.querySelectorAll(".mobile-nav a").forEach((link) => {
-  link.addEventListener("click", () => {
-    mobileNav.classList.remove("open");
-    menuToggle.setAttribute("aria-expanded", "false");
-  });
-});
-
-exploreBtn.addEventListener("click", () => {
-  const workSection = document.getElementById("work");
-  workSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  showToast("Scrolling to Work section");
-});
-
-allServiceBtn.addEventListener("click", () => {
-  const experienceSection = document.getElementById("experience");
-  experienceSection.scrollIntoView({ behavior: "smooth", block: "start" });
-  showToast("Opening experience section");
-});
-
-document.querySelectorAll(".service-read").forEach((button) => {
-  button.addEventListener("click", () => {
-    const serviceName = button.getAttribute("data-service") || "Service";
-    showToast(`Selected service: ${serviceName}`);
-  });
-});
-
-if (servicesBody && serviceCards.length > 0) {
-  serviceCards.forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      servicesBody.classList.add("is-hovering");
-      serviceCards.forEach((item) => item.classList.remove("is-active"));
-      card.classList.add("is-active");
-    });
-  });
-
-  servicesBody.addEventListener("mouseleave", () => {
-    servicesBody.classList.remove("is-hovering");
-    serviceCards.forEach((item) => item.classList.remove("is-active"));
-  });
-}
-
-const renderExperienceDetail = (expId) => {
-  const exp = experienceData[expId];
-  if (!exp || !detailTitle || !detailSubtitle || !detailResponsibilities || !detailOverview) {
-    return;
+  const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+  if (isOpen) {
+    closeMobileNav();
+  } else {
+    mobileNav.classList.add("is-open");
+    mobileNav.setAttribute("aria-hidden", "false");
+    menuToggle.setAttribute("aria-expanded", "true");
+    menuToggle.setAttribute("aria-label", "Close navigation");
   }
-
-  detailTitle.textContent = exp.title;
-  detailSubtitle.textContent = exp.subtitle;
-
-  detailResponsibilities.innerHTML = "";
-  exp.responsibilities.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    detailResponsibilities.appendChild(li);
-  });
-
-  detailOverview.innerHTML = "";
-  const overviewList = document.createElement("ul");
-  exp.overview.forEach((paragraph) => {
-    const li = document.createElement("li");
-    li.textContent = paragraph;
-    overviewList.appendChild(li);
-  });
-  detailOverview.appendChild(overviewList);
-};
-
-const syncExperienceActiveCard = () => {
-  if (!experienceItems.length) {
-    return;
-  }
-
-  const activeId = hoveredExperienceId || selectedExperienceId;
-  experienceItems.forEach((item) => {
-    item.classList.toggle("is-active", item.getAttribute("data-exp-id") === activeId);
-  });
-};
-
-const openExperienceById = (expId) => {
-  if (!experienceLayout) {
-    return;
-  }
-
-  selectedExperienceId = expId;
-  hoveredExperienceId = null;
-  renderExperienceDetail(expId);
-  experienceLayout.classList.add("is-open");
-  syncExperienceActiveCard();
-};
-
-if (experienceLayout && experienceItems.length > 0) {
-  syncExperienceActiveCard();
-
-  experienceViewButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const expId = button.getAttribute("data-exp-id") || "smart-flema";
-      openExperienceById(expId);
-
-      showToast("Showing project details");
-    });
-  });
-
-  experienceItems.forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      hoveredExperienceId = item.getAttribute("data-exp-id");
-      syncExperienceActiveCard();
-    });
-
-    item.addEventListener("click", (event) => {
-      if (event.target.classList.contains("experience-view")) {
-        return;
-      }
-
-      const expId = item.getAttribute("data-exp-id") || "smart-flema";
-      openExperienceById(expId);
-    });
-  });
-
-  const experienceList = document.querySelector(".experience-list");
-  if (experienceList) {
-    experienceList.addEventListener("mouseleave", () => {
-      hoveredExperienceId = null;
-      syncExperienceActiveCard();
-    });
-  }
-}
-
-if (caseDetailButtons.length > 0) {
-  caseDetailButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const expId = button.getAttribute("data-target") || "smart-flema";
-      const expSection = document.getElementById("experience");
-
-      if (expSection) {
-        expSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-
-      openExperienceById(expId);
-      showToast("Opening selected case details");
-    });
-  });
-}
-
-if (detailClose && experienceLayout) {
-  detailClose.addEventListener("click", () => {
-    experienceLayout.classList.remove("is-open");
-    hoveredExperienceId = null;
-    syncExperienceActiveCard();
-  });
-}
-
-if (tagPills.length > 0) {
-  tagPills.forEach((pill) => {
-    pill.addEventListener("click", () => {
-      pill.classList.toggle("is-selected");
-    });
-  });
-}
-
-if (reachForm) {
-  reachForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const selectedTags = Array.from(tagPills)
-      .filter((pill) => pill.classList.contains("is-selected"))
-      .map((pill) => pill.textContent?.trim())
-      .filter(Boolean);
-
-    showToast(
-      selectedTags.length > 0
-        ? `Message sent with ${selectedTags.length} selected topics`
-        : "Message sent successfully"
-    );
-
-    reachForm.reset();
-    tagPills.forEach((pill) => pill.classList.remove("is-selected"));
-  });
-}
-
-playBtn.addEventListener("click", () => {
-  videoModal.classList.add("open");
-  videoModal.setAttribute("aria-hidden", "false");
 });
 
-const closeVideoModal = () => {
-  videoModal.classList.remove("open");
-  videoModal.setAttribute("aria-hidden", "true");
-};
-
-closeModal.addEventListener("click", closeVideoModal);
-
-videoModal.addEventListener("click", (event) => {
-  if (event.target === videoModal) {
-    closeVideoModal();
-  }
+mobileNav.addEventListener("click", (event) => {
+  if (event.target.matches("a")) closeMobileNav();
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    closeVideoModal();
+  if (event.key === "Escape" && menuToggle.getAttribute("aria-expanded") === "true") {
+    closeMobileNav();
+    menuToggle.focus();
   }
 });
+
+document.getElementById("currentYear").textContent = new Date().getFullYear();
+renderProjects();
+renderExperience();
