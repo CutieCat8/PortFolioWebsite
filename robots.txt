@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portfoliowebsite-peach-seven.vercel.app/sitemap.xml
