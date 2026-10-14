@@ -751,7 +751,7 @@ img {
 }
 
 .experience-role span {
-  color: rgba(255, 253, 247, 0.43);
+  color: rgba(255, 253, 247, 0.62);
 }
 
 .experience-role p {
@@ -888,7 +888,7 @@ img {
 
 .email-note {
   margin: 13px 0 0;
-  color: rgba(255, 253, 247, 0.45);
+  color: rgba(255, 253, 247, 0.64);
   font-size: 0.75rem;
 }
 
@@ -914,7 +914,7 @@ img {
 }
 
 .contact-details span {
-  color: rgba(255, 253, 247, 0.43);
+  color: rgba(255, 253, 247, 0.62);
 }
 
 .site-footer {
