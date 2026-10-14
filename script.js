@@ -287,6 +287,7 @@ const caseDialog = document.getElementById("caseDialog");
 const dialogContent = document.getElementById("dialogContent");
 const menuToggle = document.getElementById("menuToggle");
 const mobileNav = document.getElementById("mobileNav");
+const siteHeader = document.querySelector(".site-header");
 let activeFilter = "all";
 
 const escapeHtml = (value) => String(value)
@@ -449,6 +450,13 @@ document.addEventListener("keydown", (event) => {
     menuToggle.focus();
   }
 });
+
+const updateHeaderBackground = () => {
+  siteHeader.classList.toggle("is-scrolled", window.scrollY > 8);
+};
+
+updateHeaderBackground();
+window.addEventListener("scroll", updateHeaderBackground, { passive: true });
 
 document.getElementById("currentYear").textContent = new Date().getFullYear();
 renderProjects();

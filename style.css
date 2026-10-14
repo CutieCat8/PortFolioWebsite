@@ -108,7 +108,7 @@ img {
   min-height: 72px;
   padding: 0 var(--gutter);
   border-bottom: 1px solid rgba(255, 253, 247, 0.11);
-  background: rgba(27, 28, 28, 0.82);
+  background: #1a1b1b;
   color: var(--white);
   display: flex;
   align-items: center;
@@ -117,6 +117,11 @@ img {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(18px) saturate(80%);
   -webkit-backdrop-filter: blur(18px) saturate(80%);
+  transition: background-color 180ms ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(27, 28, 28, 0.82);
 }
 
 .brand {
@@ -385,66 +390,77 @@ img {
 
 .hero-portrait {
   grid-area: portrait;
-  padding: clamp(32px, 4vw, 64px) clamp(24px, 3vw, 46px);
-  background:
-    linear-gradient(180deg, rgba(122, 62, 72, 0.045), transparent 38%),
-    var(--paper-deep);
-  color: var(--ink);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: relative;
+  min-height: calc(100vh - 72px);
+  padding: 0;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--white);
 }
 
 .portrait-frame {
-  position: relative;
-  border: 1px solid rgba(17, 17, 15, 0.28);
-  padding: 10px;
+  position: absolute;
+  inset: 0;
 }
 
 .portrait-frame::before {
+  display: none;
+}
+
+.portrait-frame::after {
   content: "";
   position: absolute;
-  width: 48px;
-  height: 48px;
-  top: -14px;
-  right: -14px;
-  border-top: 2px solid var(--accent-dark);
-  border-right: 2px solid var(--accent-dark);
+  inset: 34% 0 0;
+  z-index: 1;
+  background: linear-gradient(180deg, transparent, rgba(17, 17, 15, 0.82));
+  pointer-events: none;
 }
 
 .portrait-frame img {
   width: 100%;
-  height: clamp(360px, 52vw, 650px);
+  height: 100%;
   object-fit: cover;
   object-position: center 25%;
   filter: grayscale(100%) contrast(1.04);
 }
 
 .portrait-frame p {
-  margin: 10px 0 0;
-  padding: 0 4px;
+  position: absolute;
+  right: clamp(20px, 3vw, 38px);
+  bottom: 24px;
+  left: clamp(20px, 3vw, 38px);
+  z-index: 2;
+  margin: 0;
+  padding: 0;
   display: flex;
   justify-content: space-between;
   gap: 12px;
+  color: var(--white);
   font-family: var(--mono);
   font-size: 0.65rem;
   text-transform: uppercase;
 }
 
 .portrait-frame p span:first-child {
-  color: var(--accent-dark);
+  color: var(--accent);
   font-weight: 700;
 }
 
 .portrait-frame p span:last-child {
-  color: var(--muted);
+  color: rgba(255, 253, 247, 0.76);
 }
 
 .portrait-note {
+  position: absolute;
+  right: clamp(20px, 3vw, 38px);
+  bottom: 62px;
+  left: clamp(20px, 3vw, 38px);
+  z-index: 2;
   max-width: 440px;
-  margin: 26px 0 0;
-  padding-top: 18px;
-  border-top: 2px solid var(--accent-dark);
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 253, 247, 0.52);
+  color: rgba(255, 253, 247, 0.92);
   font-weight: 600;
   line-height: 1.55;
 }
@@ -1191,11 +1207,12 @@ img {
   }
 
   .hero-portrait {
-    padding: 44px var(--gutter);
+    min-height: min(125vw, 650px);
+    padding: 0;
   }
 
   .portrait-frame img {
-    height: min(118vw, 560px);
+    height: 100%;
   }
 
   .section-heading {
