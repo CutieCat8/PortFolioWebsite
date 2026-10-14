@@ -1,0 +1,10 @@
+{
+  "name": "veerachit-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "lint": "node --check script.js && node tests/portfolio.test.mjs",
+    "test": "node tests/portfolio.test.mjs",
+    "build": "node scripts/build.mjs"
+  }
+}
