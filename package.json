@@ -5,6 +5,7 @@
   "scripts": {
     "lint": "node --check script.js && node tests/portfolio.test.mjs",
     "test": "node tests/portfolio.test.mjs",
+    "dev": "npx serve .",
     "build": "node scripts/build.mjs"
   }
 }
