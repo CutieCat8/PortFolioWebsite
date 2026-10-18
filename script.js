@@ -461,3 +461,17 @@ window.addEventListener("scroll", updateHeaderBackground, { passive: true });
 document.getElementById("currentYear").textContent = new Date().getFullYear();
 renderProjects();
 renderExperience();
+
+if (window.createCrosshair && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+  createCrosshair({
+    color: "#ffffff",
+    targetEffect: "lock",
+    targetSelector: "a:not(.desktop-nav a), button, h1, h2, h3, h4, p, [data-crosshair-target]",
+    axisLines: false,
+    adaptive: true,
+    thickness: 1,
+    opacity: 0.85,
+    smoothing: 0.35,
+    showCoordinates: true
+  });
+}
