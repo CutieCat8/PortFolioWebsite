@@ -255,11 +255,9 @@ img {
 }
 
 .signal {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--signal);
-  box-shadow: 0 0 0 5px rgba(201, 130, 143, 0.18);
+  color: var(--signal);
+  font-size: 2em;
+  line-height: 1;
 }
 
 .hero h1 {
