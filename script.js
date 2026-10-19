@@ -328,12 +328,14 @@ const linkMarkup = (project, compact = false) => {
 };
 
 const projectCard = (project, index) => `
-  <article class="project-card ${index < 2 ? "project-card-large" : ""}" data-categories="${project.categories.join(" ")}">
-    ${renderProjectVisual(project)}
-    <div class="project-card-body">
-      <div class="badge-row"><span class="badge badge-status">${escapeHtml(project.statusLabel)}</span><span class="badge">${escapeHtml(project.teamType)}</span></div>
+  <article class="project-card" style="--stack: ${index}" data-categories="${project.categories.join(" ")}">
+    <header class="project-card-head">
       <p class="project-number">0${index + 1} / ${escapeHtml(project.year)}</p>
       <h3>${escapeHtml(project.title)}</h3>
+      <div class="badge-row"><span class="badge badge-status">${escapeHtml(project.statusLabel)}</span><span class="badge">${escapeHtml(project.teamType)}</span></div>
+    </header>
+    ${renderProjectVisual(project)}
+    <div class="project-card-body">
       <p class="project-subtitle">${escapeHtml(project.subtitle)}</p>
       <p class="project-summary">${escapeHtml(project.shortDescription)}</p>
       <p class="project-role"><span>Role</span>${escapeHtml(project.role)}</p>
