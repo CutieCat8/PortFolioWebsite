@@ -28,7 +28,9 @@ const projects = [
     featured: true,
     categories: ["full-stack", "back-end", "ai-cv", "leadership"],
     currentStatus: "The end-to-end voice, retrieval, character, and admin workflows are functional as an academic system. No production deployment or usage volume is claimed.",
-    visualCode: "VOICE / RAG"
+    visualCode: "VOICE / RAG",
+    video: "assets/cat-voice-ai.mp4",
+    videoSpeed: 0.65
   },
   {
     id: "dear-days",
@@ -59,7 +61,10 @@ const projects = [
     featured: true,
     categories: ["full-stack", "back-end"],
     currentStatus: "Completed as a team project. Contributions are described by area and do not imply sole ownership of the entire application.",
-    visualCode: "DATA / 3D"
+    visualCode: "DATA / 3D",
+    video: "assets/dear-days-book.mp4",
+    videoTop: "13%",
+    videoSize: "90%"
   },
   {
     id: "lampang-smart-city",
@@ -309,8 +314,12 @@ const renderProjectVisual = (project) => {
   }
 
   const parts = project.visualCode.split(" / ");
+  const video = project.video
+    ? `<video src="${escapeHtml(project.video)}"${project.videoSpeed ? ` data-speed="${project.videoSpeed}"` : ""} autoplay muted loop playsinline preload="metadata"></video>`
+    : "";
   return `
-    <div class="project-visual project-visual-type" aria-hidden="true">
+    <div class="project-visual project-visual-type${project.video ? " project-visual-video" : ""}"${project.videoTop ? ` style="--video-top: ${escapeHtml(project.videoTop)}; --video-size: ${escapeHtml(project.videoSize || "76%")}; --video-shift: ${escapeHtml(project.videoShift || "0%")}"` : ""} aria-hidden="true">
+      ${video}
       <span>${escapeHtml(parts[0])}</span><span>${escapeHtml(parts[1] || "BUILD")}</span>
       <i>${escapeHtml(project.year)}</i>
     </div>`;
@@ -363,6 +372,13 @@ const experienceCard = (project, index) => `
 const renderProjects = () => {
   const featured = projects.filter((project) => project.featured && (activeFilter === "all" || project.categories.includes(activeFilter)));
   projectGrid.innerHTML = featured.map(projectCard).join("");
+  projectGrid.querySelectorAll("video[data-speed]").forEach((video) => {
+    video.defaultPlaybackRate = Number(video.dataset.speed);
+    video.playbackRate = Number(video.dataset.speed);
+  });
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    projectGrid.querySelectorAll("video").forEach((video) => video.pause());
+  }
   filterStatus.textContent = `${featured.length} project${featured.length === 1 ? "" : "s"} shown.`;
 };
 

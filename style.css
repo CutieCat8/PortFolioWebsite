@@ -663,6 +663,39 @@ img {
   align-self: flex-end;
 }
 
+.project-visual-video {
+  justify-content: flex-start;
+}
+
+.project-visual-video video {
+  position: absolute;
+  top: var(--video-top, 26%);
+  left: calc((100% - var(--video-size, 76%)) / 2 + var(--video-shift, 0%));
+  width: var(--video-size, 76%);
+  height: var(--video-size, 76%);
+  object-fit: contain;
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  mix-blend-mode: lighten;
+}
+
+.project-visual-video span {
+  font-size: clamp(1.6rem, 2.7vw, 2.7rem);
+  letter-spacing: -0.04em;
+}
+
+.project-visual-video span:nth-of-type(1) {
+  color: var(--paper);
+  align-self: flex-start;
+}
+
+.project-visual-video span:nth-of-type(2) {
+  position: absolute;
+  top: 46px;
+  right: 24px;
+  color: #b45f6e;
+}
+
 .project-visual-type i {
   position: absolute;
   top: 22px;
