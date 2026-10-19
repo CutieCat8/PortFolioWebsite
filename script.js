@@ -349,7 +349,7 @@ const linkMarkup = (project, compact = false) => {
 const projectCard = (project, index) => `
   <article class="project-card" style="--stack: ${index}" data-categories="${project.categories.join(" ")}">
     <header class="project-card-head">
-      <div class="project-tab"><p class="project-number">0${index + 1}</p><h3>${escapeHtml(project.title)}</h3></div>
+      <div class="project-tab" role="button" tabindex="0" aria-label="Show ${escapeHtml(project.title)}"><p class="project-number">0${index + 1}</p><h3>${escapeHtml(project.title)}</h3></div>
     </header>
     ${renderProjectVisual(project)}
     <div class="project-card-body">
@@ -422,6 +422,36 @@ const openCaseStudy = (projectId) => {
   document.body.classList.add("dialog-open");
   document.getElementById("dialogClose").focus();
 };
+
+// Clicking a folder tab scrolls its card to the top of the stack so it opens in full.
+const openStackedCard = (card) => {
+  const cards = [...projectGrid.querySelectorAll(".project-card")];
+  const index = cards.indexOf(card);
+  const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  if (!window.matchMedia("(min-width: 981px)").matches) {
+    window.scrollTo({ top: window.scrollY + card.getBoundingClientRect().top - 88, behavior });
+    return;
+  }
+  const grid = getComputedStyle(projectGrid);
+  const zoom = card.getBoundingClientRect().width / card.offsetWidth;
+  const gap = (parseFloat(grid.rowGap) || 0) * zoom;
+  const stuckTop = (parseFloat(grid.getPropertyValue("--stack-top")) + index * parseFloat(grid.getPropertyValue("--stack-peek"))) * zoom;
+  let natural = projectGrid.getBoundingClientRect().top + window.scrollY;
+  for (let i = 0; i < index; i += 1) natural += cards[i].getBoundingClientRect().height + gap;
+  window.scrollTo({ top: Math.max(0, natural - stuckTop), behavior });
+};
+
+projectGrid.addEventListener("click", (event) => {
+  const tab = event.target.closest(".project-tab");
+  if (tab) openStackedCard(tab.closest(".project-card"));
+});
+
+projectGrid.addEventListener("keydown", (event) => {
+  const tab = event.target.closest(".project-tab");
+  if (!tab || (event.key !== "Enter" && event.key !== " ")) return;
+  event.preventDefault();
+  openStackedCard(tab.closest(".project-card"));
+});
 
 const tiltReset = ["--tx", "--ty", "--sx", "--sy", "--mx", "--my", "--glow"];
 
