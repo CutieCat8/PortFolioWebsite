@@ -534,7 +534,7 @@ img {
 
 .project-grid {
   --stack-top: 88px;
-  --stack-head: 54px;
+  --stack-head: 40px;
   --stack-peek: 40px;
   display: flex;
   flex-direction: column;
@@ -542,12 +542,11 @@ img {
 }
 
 .project-card {
+  --tab-radius: 14px;
+  --tab-gap: 15px;
+  position: relative;
+  isolation: isolate;
   min-width: 0;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  background: var(--paper);
-  box-shadow: 0 -8px 24px rgba(17, 17, 15, 0.07);
-  overflow: hidden;
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   grid-template-areas:
@@ -555,10 +554,52 @@ img {
     "body visual";
 }
 
+.project-card::before,
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: var(--stack-head) 0 0;
+  border-radius: 0 14px 14px 14px;
+  pointer-events: none;
+}
+
+.project-card::before {
+  z-index: -1;
+  background: var(--paper);
+  box-shadow: 0 -8px 24px rgba(17, 17, 15, 0.07);
+}
+
+.project-card::after {
+  z-index: 2;
+  border: 1px solid var(--line);
+}
+
 @media (min-width: 981px) {
   .project-card {
     position: sticky;
     top: calc(var(--stack-top) + var(--stack, 0) * var(--stack-peek));
+  }
+
+  /* a little air under the tab; the rest of the band the next card covers is kept clear of labels */
+  .project-card-body {
+    margin-top: var(--tab-gap);
+  }
+
+  .project-card .project-visual-type {
+    padding-top: calc(var(--stack-peek) - var(--tab-gap) + 6px);
+  }
+
+  .project-card .project-visual-type {
+    --year-top: calc(var(--stack-peek) - var(--tab-gap) + 6px + 0.755 * clamp(1.6rem, 2.7vw, 2.7rem) - 8px);
+  }
+
+  .project-card .project-visual-type i {
+    /* sit on the same baseline as the first label (padding-top + 0.755 × its font size, less the year's own ascent) */
+    top: var(--year-top);
+  }
+
+  .project-card :is(.project-visual-video, .project-visual-tilt) span:nth-of-type(2) {
+    top: calc(var(--year-top) + 20px);
   }
 }
 
@@ -571,43 +612,73 @@ img {
       "body";
   }
 
-  .project-card .project-visual {
-    border-left: 0;
-    border-bottom: 1px solid var(--line);
-  }
 }
 
 .project-card-head {
   grid-area: head;
+  position: relative;
+  z-index: 3;
   height: var(--stack-head);
-  padding: 0 clamp(20px, 3vw, 36px) calc(var(--stack-head) - var(--stack-peek));
-  border-bottom: 1px solid var(--line);
+  padding: 0 0 8px;
   display: flex;
-  align-items: center;
-  gap: 18px;
+  align-items: flex-end;
 }
 
-.project-card-head h3 {
+.project-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  max-width: 62%;
+  height: calc(var(--stack-head) + 1px);
+  margin: 0 auto -8px 0;
+  padding: 0 6px 0 24px;
+  border: solid var(--line);
+  border-width: 1px 0 0 1px;
+  border-radius: var(--tab-radius) 0 0 0;
+  background: var(--paper);
+}
+
+/* smooth S-curve that lifts the panel edge up into the tab */
+.project-tab::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -52px;
+  width: 52px;
+  height: 41px;
+  transform: scaleX(-1);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52 41'%3E%3Cpath d='M0 40.5C24 40.5 26 .5 52 .5V41H0Z' fill='%23fff'/%3E%3Cpath d='M0 40.5C24 40.5 26 .5 52 .5' fill='none' stroke='rgba(17,17,15,0.22)'/%3E%3C/svg%3E") no-repeat;
+}
+
+.project-tab .project-number {
   margin: 0;
-  flex: 1;
+  flex: none;
+  color: var(--muted, #6b6a63);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+}
+
+.project-tab h3 {
+  margin: 0;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: clamp(1.05rem, 1.7vw, 1.5rem);
+  font-size: clamp(0.95rem, 1.4vw, 1.2rem);
   line-height: 1;
   letter-spacing: -0.04em;
-}
-
-.project-card-head .badge-row {
-  flex-wrap: nowrap;
 }
 
 .project-visual {
   grid-area: visual;
   min-height: 240px;
   overflow: hidden;
-  border-left: 1px solid var(--line);
+  margin: var(--tab-gap);
+  border: 1px solid var(--line);
+  border-radius: 14px;
 }
 
 .project-visual-image {
@@ -764,6 +835,10 @@ img {
   font-size: 0.7rem;
   font-style: normal;
   letter-spacing: 0.1em;
+}
+
+.project-card-body .badge-row {
+  margin-bottom: 18px;
 }
 
 .project-card-body {
@@ -1401,10 +1476,6 @@ img {
 
   .filter-button {
     flex: 0 0 auto;
-  }
-
-  .project-card-head .badge-row {
-    display: none;
   }
 
   .project-visual {
