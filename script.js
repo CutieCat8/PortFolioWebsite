@@ -29,8 +29,7 @@ const projects = [
     categories: ["full-stack", "back-end", "ai-cv", "leadership"],
     currentStatus: "The end-to-end voice, retrieval, character, and admin workflows are functional as an academic system. No production deployment or usage volume is claimed.",
     visualCode: "VOICE / RAG",
-    video: "assets/cat-voice-ai.mp4",
-    videoSpeed: 0.65
+    tilt: { src: "assets/ditc-cat.webp", background: "#ffffff" }
   },
   {
     id: "dear-days",
@@ -62,9 +61,7 @@ const projects = [
     categories: ["full-stack", "back-end"],
     currentStatus: "Completed as a team project. Contributions are described by area and do not imply sole ownership of the entire application.",
     visualCode: "DATA / 3D",
-    video: "assets/dear-days-book.mp4",
-    videoTop: "13%",
-    videoSize: "90%"
+    tilt: { src: "assets/dear-days-book.webp", background: "#ffffff" }
   },
   {
     id: "lampang-smart-city",
@@ -95,7 +92,8 @@ const projects = [
     featured: true,
     categories: ["back-end", "ai-cv"],
     currentStatus: "The municipal CCTV API and live camera feed have not been provided. The people-counting component is prepared for planned integration and has been evaluated with development footage only.",
-    visualCode: "API / CV"
+    visualCode: "API / CV",
+    tilt: { src: "assets/lampang.webp", background: "#ffffff", scale: 0.75 }
   },
   {
     id: "crowdlens",
@@ -126,7 +124,8 @@ const projects = [
     featured: true,
     categories: ["ai-cv"],
     currentStatus: "Completed as a standalone webcam demonstration. It is separate from the Lampang platform and is not connected to municipal cameras.",
-    visualCode: "YOLO / LIVE"
+    visualCode: "YOLO / LIVE",
+    tilt: { src: "assets/crowdlens.webp", background: "#ffffff", scale: 0.75 }
   },
   {
     id: "classsync",
@@ -157,7 +156,8 @@ const projects = [
     featured: true,
     categories: ["full-stack"],
     currentStatus: "The front-end workflows are functional. Authentication and persistence are mock or local and are not presented as a production back end.",
-    visualCode: "LOGIC / UI"
+    visualCode: "LOGIC / UI",
+    tilt: { src: "assets/classsync.webp", background: "#ffffff", scale: 0.6 }
   },
   {
     id: "aeris",
@@ -188,7 +188,8 @@ const projects = [
     featured: true,
     categories: ["full-stack", "back-end"],
     currentStatus: "Completed as a course project. Payment is simulated; no production payment or booking provider is connected.",
-    visualCode: "BOOK / API"
+    visualCode: "BOOK / API",
+    tilt: { src: "assets/aeris.webp", background: "#ffffff", scale: 0.7 }
   },
   {
     id: "chiang-mai-smart-city",
@@ -314,6 +315,15 @@ const renderProjectVisual = (project) => {
   }
 
   const parts = project.visualCode.split(" / ");
+  if (project.tilt) {
+    return `
+    <div class="project-visual project-visual-type project-visual-tilt" style="--tile-bg: ${escapeHtml(project.tilt.background)}; --tilt-scale: ${project.tilt.scale || 1}" aria-hidden="true">
+      <div class="tilt-stage"><div class="tilt-card"><img src="${escapeHtml(project.tilt.src)}" alt="" draggable="false" loading="lazy" /></div></div>
+      <span>${escapeHtml(parts[0])}</span><span>${escapeHtml(parts[1] || "BUILD")}</span>
+      <i>${escapeHtml(project.year)}</i>
+    </div>`;
+  }
+
   const video = project.video
     ? `<video src="${escapeHtml(project.video)}"${project.videoSpeed ? ` data-speed="${project.videoSpeed}"` : ""} autoplay muted loop playsinline preload="metadata"></video>`
     : "";
@@ -413,6 +423,31 @@ const openCaseStudy = (projectId) => {
   document.body.classList.add("dialog-open");
   document.getElementById("dialogClose").focus();
 };
+
+const tiltReset = ["--tx", "--ty", "--sx", "--sy", "--mx", "--my", "--glow"];
+
+if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  projectGrid.addEventListener("pointermove", (event) => {
+    const tile = event.target.closest(".project-visual-tilt");
+    if (!tile) return;
+    const rect = tile.getBoundingClientRect();
+    const x = (event.clientX - rect.left) / rect.width - 0.5;
+    const y = (event.clientY - rect.top) / rect.height - 0.5;
+    tile.style.setProperty("--tx", `${(-y * 18).toFixed(2)}deg`);
+    tile.style.setProperty("--ty", `${(x * 18).toFixed(2)}deg`);
+    tile.style.setProperty("--sx", `${(-x * 28).toFixed(1)}px`);
+    tile.style.setProperty("--sy", `${(16 - y * 28).toFixed(1)}px`);
+    tile.style.setProperty("--mx", `${((x + 0.5) * 100).toFixed(1)}%`);
+    tile.style.setProperty("--my", `${((y + 0.5) * 100).toFixed(1)}%`);
+    tile.style.setProperty("--glow", "1");
+  });
+
+  projectGrid.addEventListener("pointerout", (event) => {
+    const tile = event.target.closest(".project-visual-tilt");
+    if (!tile || tile.contains(event.relatedTarget)) return;
+    tiltReset.forEach((name) => tile.style.removeProperty(name));
+  });
+}
 
 document.getElementById("projectFilters").addEventListener("click", (event) => {
   const button = event.target.closest("[data-filter]");
