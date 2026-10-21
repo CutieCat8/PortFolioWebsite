@@ -160,6 +160,38 @@ const projects = [
     tilt: { src: "assets/classsync.webp", background: "#ffffff", scale: 0.6 }
   },
   {
+    id: "the-commons",
+    title: "The Commons",
+    subtitle: "Restaurant Website with Menu & Ordering Flow",
+    shortDescription: "A restaurant website with a categorised menu, a persistent cart, a receipt, and an order history, built with plain HTML, CSS, and JavaScript.",
+    problem: "A restaurant needs a clear online presence where guests can browse the menu, find the venue, and place an order without friction.",
+    projectScope: "A completed front-end website covering a landing page, a menu page with categories and item details, a cart, a receipt, and an order history. Orders are simulated and stored in the browser.",
+    role: "Front-End Developer",
+    responsibilities: [
+      "Built the landing page with menu highlights and a find-us section.",
+      "Implemented the menu page with category tabs and an item detail view.",
+      "Created the cart, receipt, and order-history screens."
+    ],
+    technicalImplementation: [
+      "Kept the menu in a single data module that the menu, cart, and receipt screens all read from.",
+      "Persisted the cart and order history in localStorage, with a cart badge that stays in sync across pages.",
+      "Deployed as a static site on Azure Static Web Apps through a GitHub Actions workflow."
+    ],
+    technologies: ["HTML", "CSS", "JavaScript", "Azure Static Web Apps"],
+    status: "Completed front-end website",
+    statusLabel: "Completed",
+    teamType: "Course Project",
+    year: "2026",
+    repository: "https://github.com/CutieCat8/The-Commons-Website",
+    demo: "https://gray-river-0c8ce3e00.7.azurestaticapps.net",
+    images: [],
+    featured: true,
+    categories: ["full-stack"],
+    currentStatus: "The browsing, cart, receipt, and order-history flows work in the browser. There is no back end, payment, or real order processing; orders are simulated and kept in localStorage.",
+    visualCode: "MENU / CART",
+    tilt: { src: "assets/the-commons.webp", background: "#ffffff", scale: 0.55 }
+  },
+  {
     id: "aeris",
     title: "AERIS",
     subtitle: "Flight Booking Platform",
@@ -421,6 +453,7 @@ const caseGalleryCounts = {
     { label: "Citizen", dir: "chiang-mai-smart-city/citizen", count: 5 }
   ],
   "classsync": 8,
+  "the-commons": 7,
   "crowdlens": 3,
   "dear-days": 7
 };

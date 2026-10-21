@@ -13,6 +13,7 @@ const projectNames = [
   "Smart City Management Platform",
   "CrowdLens",
   "ClassSync",
+  "The Commons",
   "AERIS",
   "Chiang Mai Smart City",
   "Smart-FLEMA",
