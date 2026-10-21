@@ -55,7 +55,7 @@ const projects = [
     teamType: "Team Project",
     year: "2026",
     repository: "https://github.com/CutieCat8/Dear-Days",
-    demo: null,
+    demo: "https://dear-days-kappa.vercel.app/",
     images: [],
     featured: true,
     categories: ["full-stack", "back-end"],
@@ -86,7 +86,7 @@ const projects = [
     statusLabel: "In Development",
     teamType: "Municipal Collaboration",
     year: "2026",
-    repository: null,
+    repository: "https://github.com/PreturnPRO/AI-Counting",
     demo: null,
     images: [],
     featured: true,
@@ -289,8 +289,7 @@ const projects = [
 const projectGrid = document.getElementById("projectGrid");
 const experienceList = document.getElementById("experienceList");
 const filterStatus = document.getElementById("filterStatus");
-const caseDialog = document.getElementById("caseDialog");
-const dialogContent = document.getElementById("dialogContent");
+const casePage = document.getElementById("casePage");
 const menuToggle = document.getElementById("menuToggle");
 const mobileNav = document.getElementById("mobileNav");
 const siteHeader = document.querySelector(".site-header");
@@ -343,7 +342,7 @@ const linkMarkup = (project, compact = false) => {
   if (project.demo) {
     links.push(`<a class="text-link" href="${escapeHtml(project.demo)}" target="_blank" rel="noopener noreferrer" aria-label="Open live demo for ${escapeHtml(project.title)}">Live Demo <span aria-hidden="true">↗</span></a>`);
   }
-  return links.length ? `<div class="${compact ? "card-links" : "dialog-links"}">${links.join("")}</div>` : "";
+  return links.length ? `<div class="${compact ? "card-links" : "case-links"}">${links.join("")}</div>` : "";
 };
 
 const projectCard = (project, index) => `
@@ -397,30 +396,664 @@ const renderExperience = () => {
 
 const listMarkup = (items) => `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
 
-const openCaseStudy = (projectId) => {
-  const project = projects.find((item) => item.id === projectId);
-  if (!project) return;
+const pageTitle = document.title;
+let caseReturnY = null;
 
-  dialogContent.innerHTML = `
-    <header class="dialog-header">
-      <div class="badge-row"><span class="badge badge-status">${escapeHtml(project.statusLabel)}</span><span class="badge">${escapeHtml(project.teamType)}</span></div>
-      <h2 id="dialogTitle">${escapeHtml(project.title)}</h2>
-      <p class="dialog-subtitle">${escapeHtml(project.subtitle)}</p>
-      <p class="dialog-role">${escapeHtml(project.role)} · ${escapeHtml(project.year)}</p>
-    </header>
-    <div class="dialog-grid">
-      <section><p class="dialog-label">Problem</p><p>${escapeHtml(project.problem)}</p></section>
-      <section><p class="dialog-label">Project Scope</p><p>${escapeHtml(project.projectScope)}</p></section>
-      <section><p class="dialog-label">My Contribution</p>${listMarkup(project.responsibilities)}</section>
-      <section><p class="dialog-label">Technical Implementation</p>${listMarkup(project.technicalImplementation)}</section>
-      <section class="dialog-status"><p class="dialog-label">Current Status</p><p>${escapeHtml(project.currentStatus)}</p></section>
-      <section><p class="dialog-label">Technologies</p><ul class="tech-list">${renderTags(project.technologies, project.technologies.length)}</ul></section>
-      <section><p class="dialog-label">Links</p>${linkMarkup(project) || "<p>No public repository or live demo is listed for this project.</p>"}</section>
+// Screenshots for the case study carousel, resized from the project pictures into assets/carousel/.
+// A project with several parts lists them as sets, each shown on its own tab so they never mix in the ring.
+const caseGalleryCounts = {
+  "aeris": 8,
+  "ditc-cat": [
+    { label: "Admin", dir: "ditc-cat", count: 7 },
+    { label: "Character", dir: "ditc-cat/character", count: 5 }
+  ],
+  "lampang-smart-city": [
+    { label: "Pitch deck", type: "book", dir: "lampang-smart-city/slides", count: 8 },
+    { label: "Screens", dir: "lampang-smart-city", count: 5 }
+  ],
+  "agrilink": [{ label: "Pitch deck", type: "book", dir: "agrilink", count: 10 }],
+  "smart-flema": [
+    { label: "Pitch deck", type: "book", dir: "smart-flema", count: 15 },
+    { label: "Gallery", dir: "smart-flema/gallery", count: 3 }
+  ],
+  "chiang-mai-smart-city": [
+    { label: "Officer", dir: "chiang-mai-smart-city/officer", count: 3 },
+    { label: "Citizen", dir: "chiang-mai-smart-city/citizen", count: 5 }
+  ],
+  "classsync": 8,
+  "crowdlens": 3,
+  "dear-days": 7
+};
+
+const caseGallerySets = (project) => {
+  const entry = caseGalleryCounts[project.id];
+  const sets = Array.isArray(entry) ? entry : entry ? [{ label: "", dir: project.id, count: entry }] : [];
+  const fallback = [project.images[0]?.src || project.tilt?.src].filter(Boolean);
+  const built = sets.length
+    ? sets.map(({ label, dir, count, type }) => ({
+        label,
+        type,
+        images: Array.from({ length: count }, (_, i) => `assets/carousel/${dir}/${String(i + 1).padStart(2, "0")}.webp`)
+      }))
+    : [{ label: "", images: fallback }];
+  // A cylinder needs enough faces to read as a ring, so short galleries repeat.
+  built.forEach((set) => {
+    while (set.type !== "book" && set.images.length < 6) set.images = set.images.concat(set.images);
+  });
+  return built;
+};
+
+const carouselFaces = (project, set) => set.images.map((src, i) => `
+    <button class="carousel3d-face" type="button" data-src="${escapeHtml(src)}" aria-label="Enlarge ${escapeHtml(project.title)} ${escapeHtml(set.label)} screen ${i + 1}">
+      <img src="${escapeHtml(src)}" alt="${escapeHtml(project.title)} ${escapeHtml(set.label)} — screen ${i + 1}" draggable="false" loading="${i < 3 ? "eager" : "lazy"}" />
+    </button>`).join("");
+
+const ringMarkup = (project, set) => `
+    <div class="carousel3d" tabindex="0" role="group" aria-roledescription="carousel" aria-label="${escapeHtml(project.title)} screens. Drag or use the arrow keys to rotate.">
+      <div class="carousel3d-ring">${carouselFaces(project, set)}</div>
     </div>`;
 
-  caseDialog.showModal();
-  document.body.classList.add("dialog-open");
-  document.getElementById("dialogClose").focus();
+const bookMarkup = (project, set) => `
+    <div class="book3d" tabindex="0" role="group" aria-roledescription="book" aria-label="${escapeHtml(project.title)} ${escapeHtml(set.label)}. Drag a page, or use the arrow keys or buttons, to turn it.">
+      <div class="book3d-stage"><div class="book3d-curl"><div class="book3d-book"></div></div></div>
+      <div class="book3d-controls">
+        <button type="button" data-book="prev" aria-label="Previous pages">←</button>
+        <span class="book3d-count" aria-live="polite"></span>
+        <button type="button" data-book="next" aria-label="Next pages">→</button>
+        <button type="button" data-book="enlarge">⤢ Enlarge</button>
+      </div>
+    </div>`;
+
+const renderCaseStage = (project, sets) => {
+  const tabs = sets.length > 1
+    ? `<div class="carousel3d-tabs" role="group" aria-label="Choose what to view">${sets.map((set, i) => `<button class="carousel3d-tab${i === 0 ? " is-active" : ""}" type="button" data-set="${i}" aria-pressed="${i === 0}">${escapeHtml(set.label)}</button>`).join("")}</div>`
+    : "";
+  return `${tabs}<div class="case-stage"></div>`;
+};
+
+// Short screen recordings, played on request and kept apart from the rotating screenshots.
+const caseVideos = {
+  "ditc-cat": { src: "assets/carousel/ditc-cat/demo.mp4", poster: "assets/carousel/ditc-cat/demo-poster.jpg" }
+};
+
+// The lightbox lives inside the case page because the rest of the body is hidden while a case study is open.
+const openCarouselLightbox = (media, label) => {
+  const box = document.createElement("div");
+  box.className = "carousel3d-lightbox";
+  box.setAttribute("role", "dialog");
+  box.setAttribute("aria-modal", "true");
+  box.setAttribute("aria-label", label);
+  box.innerHTML = `<button class="carousel3d-close" type="button" aria-label="Close">×</button>`;
+  box.prepend(media);
+  const close = () => {
+    media.pause?.();
+    box.remove();
+    document.removeEventListener("keydown", onKey, true);
+  };
+  const onKey = (event) => {
+    if (event.key !== "Escape") return;
+    event.stopPropagation();
+    close();
+  };
+  box.addEventListener("click", (event) => {
+    if (event.target === box || event.target.closest(".carousel3d-close")) close();
+  });
+  document.addEventListener("keydown", onKey, true);
+  casePage.append(box);
+};
+
+const openCarouselImage = (src, alt) => {
+  const image = document.createElement("img");
+  image.src = src;
+  image.alt = alt;
+  openCarouselLightbox(image, "Enlarged screen");
+  // A picture closes on any click, a video only on the backdrop or the close button.
+  image.addEventListener("click", () => image.closest(".carousel3d-lightbox")?.querySelector(".carousel3d-close").click());
+};
+
+const openCaseVideo = (video, title) => {
+  const player = document.createElement("video");
+  player.src = video.src;
+  player.poster = video.poster;
+  player.controls = true;
+  player.autoplay = true;
+  player.playsInline = true;
+  player.setAttribute("aria-label", `${title} demo video`);
+  openCarouselLightbox(player, `${title} demo video`);
+};
+
+const initCaseCarousel = (root) => {
+  const ring = root.querySelector(".carousel3d-ring");
+  const faces = [...ring.children];
+  const step = 360 / faces.length;
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let angle = 0;
+  let velocity = 0;
+  let dragging = false;
+  let moved = 0;
+  let lastX = 0;
+  let lastTime = 0;
+  let paused = false;
+  let pressedFace = null;
+  let radius = 0;
+
+  const paint = () => {
+    ring.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
+  };
+
+  const layout = () => {
+    const faceWidth = Math.min(460, Math.max(200, root.clientWidth * 0.42));
+    radius = (faceWidth + 30) / 2 / Math.tan(Math.PI / faces.length);
+    root.style.setProperty("--face-width", `${faceWidth}px`);
+    faces.forEach((face, i) => {
+      face.style.transform = `rotateY(${i * step}deg) translateZ(${radius}px)`;
+    });
+    paint();
+  };
+
+  let frame = 0;
+  const tick = (time) => {
+    if (!root.isConnected) return;
+    const dt = Math.min(0.05, (time - (frame || time)) / 1000);
+    frame = time;
+    if (!dragging) {
+      if (Math.abs(velocity) > 1) {
+        angle += velocity * dt;
+        velocity *= Math.pow(0.04, dt);
+      } else if (!reduceMotion && !paused) {
+        angle -= 5 * dt;
+      }
+    }
+    paint();
+    requestAnimationFrame(tick);
+  };
+
+  root.addEventListener("pointerdown", (event) => {
+    dragging = true;
+    pressedFace = event.target.closest(".carousel3d-face");
+    moved = 0;
+    velocity = 0;
+    lastX = event.clientX;
+    lastTime = event.timeStamp;
+    root.setPointerCapture(event.pointerId);
+  });
+  root.addEventListener("pointermove", (event) => {
+    if (!dragging) return;
+    const dx = event.clientX - lastX;
+    const dt = Math.max(1, event.timeStamp - lastTime) / 1000;
+    moved += Math.abs(dx);
+    angle += dx * 0.3;
+    velocity = reduceMotion ? 0 : (dx * 0.3) / dt;
+    lastX = event.clientX;
+    lastTime = event.timeStamp;
+  });
+  const release = () => {
+    dragging = false;
+  };
+  root.addEventListener("pointerup", release);
+  root.addEventListener("pointercancel", release);
+  root.addEventListener("pointerenter", () => { paused = true; });
+  root.addEventListener("pointerleave", () => { paused = false; });
+  root.addEventListener("focusin", () => { paused = true; });
+  root.addEventListener("focusout", () => { paused = false; });
+
+  // A drag that ends over a face must not also enlarge it.
+  // Pointer capture retargets the click to the carousel, so the face is remembered from pointerdown.
+  root.addEventListener("click", () => {
+    const face = pressedFace;
+    pressedFace = null;
+    if (!face || moved > 6) return;
+    openCarouselImage(face.dataset.src, face.querySelector("img").alt);
+  });
+
+  root.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") angle += step;
+    else if (event.key === "ArrowRight") angle -= step;
+    else return;
+    event.preventDefault();
+  });
+
+  new ResizeObserver(layout).observe(root);
+  layout();
+  requestAnimationFrame(tick);
+};
+
+
+// Page-curl geometry, ported from the Dear Days book. Origin at the spine's top, x to the right, y down: the right
+// page covers x in [0, W] and the left page x in [-W, 0]. A sheet is hinged at the spine and held by a corner, which
+// is pulled to p; the fold line is the perpendicular bisector of corner -> p, and the part on the corner's side is
+// folded over onto p's side as its mirror image.
+const bookCorner = (direction, W, cornerY) => ({ x: direction === "next" ? W : -W, y: cornerY });
+
+// Keeps the pulled corner where a sheet bound to the spine could really put it.
+const bookLimitPull = (p, direction, W, cornerY, H) => {
+  let { x, y } = p;
+  x = direction === "next" ? Math.min(x, W) : Math.max(x, -W);
+  const c = bookCorner(direction, W, cornerY);
+  const limits = [0, H].map((cy) => ({ cy, r: Math.hypot(c.x, c.y - cy) }));
+  for (let pass = 0; pass < 12; pass += 1) {
+    for (const { cy, r } of limits) {
+      const distance = Math.hypot(x, y - cy);
+      if (distance > r) {
+        x = (x * r) / distance;
+        y = cy + ((y - cy) * r) / distance;
+      }
+    }
+  }
+  return { x, y };
+};
+
+// Sutherland-Hodgman against one half-plane: keeps the points with sign * ((q - m) . n) >= 0.
+const bookClip = (polygon, n, m, sign) => {
+  const side = (q) => sign * ((q.x - m.x) * n.x + (q.y - m.y) * n.y);
+  const out = [];
+  polygon.forEach((current, index) => {
+    const previous = polygon[(index + polygon.length - 1) % polygon.length];
+    const a = side(previous);
+    const b = side(current);
+    if ((a >= 0) !== (b >= 0)) {
+      const t = a / (a - b);
+      out.push({ x: previous.x + (current.x - previous.x) * t, y: previous.y + (current.y - previous.y) * t });
+    }
+    if (b >= 0) out.push(current);
+  });
+  return out;
+};
+
+const bookCurl = (rawPull, direction, W, H, cornerY) => {
+  const c = bookCorner(direction, W, cornerY);
+  const p = bookLimitPull(rawPull, direction, W, cornerY, H);
+  const vx = p.x - c.x;
+  const vy = p.y - c.y;
+  const length = Math.hypot(vx, vy);
+  const left = direction === "next" ? 0 : -W;
+  const rect = [{ x: left, y: 0 }, { x: left + W, y: 0 }, { x: left + W, y: H }, { x: left, y: H }];
+  const progress = Math.max(0, Math.min(1, direction === "next" ? (W - p.x) / (2 * W) : (p.x + W) / (2 * W)));
+  if (length < 0.5) return { flat: true, p, flatPolygon: rect, flapPolygon: [], matrix: [1, 0, 0, 1, 0, 0], normal: { x: 0, y: 0 }, mid: c, progress };
+
+  const n = { x: vx / length, y: vy / length };
+  const m = { x: (c.x + p.x) / 2, y: (c.y + p.y) / 2 };
+  const reflect = (q) => {
+    const k = 2 * ((q.x - m.x) * n.x + (q.y - m.y) * n.y);
+    return { x: q.x - k * n.x, y: q.y - k * n.y };
+  };
+  // The back face of the sheet maps (u, v) to the sheet point (ox - u, v), then reflects across the fold line.
+  const a00 = 1 - 2 * n.x * n.x;
+  const a01 = -2 * n.x * n.y;
+  const ox = direction === "next" ? W : 0;
+  const d = 2 * (m.x * n.x + m.y * n.y);
+  return {
+    flat: false,
+    p,
+    flatPolygon: bookClip(rect, n, m, 1),
+    flapPolygon: bookClip(rect, n, m, -1).map(reflect),
+    matrix: [-a00, -a01, a01, 1 - 2 * n.y * n.y, a00 * ox + d * n.x, a01 * ox + d * n.y],
+    normal: n,
+    mid: m,
+    progress
+  };
+};
+
+// The path of the pulled corner for a turn started by a button or key: lifts from the corner, sweeps across, lands.
+const bookAutoPull = (t, direction, W, H, cornerY) => {
+  const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const c = bookCorner(direction, W, cornerY);
+  const lift = (cornerY === 0 ? 1 : -1) * H * 0.14 * Math.sin(Math.PI * eased);
+  return { x: c.x + (direction === "next" ? -1 : 1) * 2 * W * eased, y: c.y + lift };
+};
+
+const initCaseBook = (root, project, set, startSpread = 0) => {
+  const book = root.querySelector(".book3d-book");
+  const curlBox = root.querySelector(".book3d-curl");
+  const stage = root.querySelector(".book3d-stage");
+  const count = root.querySelector(".book3d-count");
+  const prev = root.querySelector('[data-book="prev"]');
+  const next = root.querySelector('[data-book="next"]');
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const images = set.images;
+  const spreadCount = Math.ceil((images.length + 1) / 2);
+  // Spread 0 is the cover alone on the right; spread s then shows pages 2s-1 and 2s.
+  const pagesOf = (spread) => (spread === 0 ? [null, 0] : [2 * spread - 1, 2 * spread < images.length ? 2 * spread : null]);
+  const AUTO_MS = 950;
+  const SETTLE_MS = 340;
+  let W = 400;
+  let H = 225;
+  let shown = startSpread;
+  let flip = null;
+  let layers = null;
+  let pull = { x: 0, y: 0 };
+  let raf = 0;
+  let press = null;
+
+  const face = (index, side) => {
+    if (index === null) return null; // an empty side is empty air: the book is closed there
+    const page = document.createElement("div");
+    page.className = "book3d-paper";
+    page.dataset.side = side;
+    page.innerHTML = `<img src="${escapeHtml(images[index])}" alt="${escapeHtml(project.title)} ${escapeHtml(set.label)} — slide ${index + 1}" draggable="false" />`;
+    return page;
+  };
+
+  const slot = (index, side, left) => {
+    const box = document.createElement("div");
+    box.className = "book3d-slot";
+    box.style.left = `${left}px`;
+    const page = face(index, side);
+    if (page) box.append(page);
+    return box;
+  };
+
+  // A closed book is centred on its one page: the cover on the right at the start, the last page on the left at the end.
+  const offsetFor = (spread) => (spread === 0 ? -W / 2 : pagesOf(spread)[1] === null ? W / 2 : 0);
+
+  const renderStatic = (left, right) => {
+    book.replaceChildren(slot(left, "left", 0), slot(right, "right", W));
+    layers = null;
+  };
+
+  const showSpread = (spread) => {
+    const [l, r] = pagesOf(spread);
+    renderStatic(l, r);
+    book.style.transform = `translateX(${offsetFor(spread)}px)`;
+    count.textContent = `${pagesOf(spread).filter((index) => index !== null).map((index) => index + 1).join(" – ")} / ${images.length}`;
+    prev.disabled = spread === 0;
+    next.disabled = spread === spreadCount - 1;
+  };
+
+  const toPolygon = (points) => (points.length < 3 ? "inset(100%)" : `polygon(${points.map((q) => `${q.x + W}px ${q.y}px`).join(",")})`);
+
+  // Writes one frame: where the fold is, what is clipped, where the folded part sits.
+  const paint = (raw, current) => {
+    const g = bookCurl(raw, current.direction, W, H, current.cornerY);
+    pull = g.p;
+    layers.flat.style.clipPath = toPolygon(g.flatPolygon);
+    layers.flapOuter.style.visibility = g.flat ? "hidden" : "visible";
+    layers.flapClip.style.clipPath = toPolygon(g.flapPolygon);
+    const [a, b, c, d, e, f] = g.matrix;
+    layers.flap.style.transform = `matrix(${a},${b},${c},${d},${e + W},${f})`;
+    if (!g.flat) {
+      const angle = Math.atan2(-g.normal.x, g.normal.y);
+      layers.bar.style.transform = `translate(${g.mid.x + W}px, ${g.mid.y}px) rotate(${angle}rad)`;
+    }
+    // slide between the two resting positions as the cover or the last page opens or closes
+    const from = offsetFor(current.from);
+    book.style.transform = `translateX(${from + (offsetFor(current.to) - from) * g.progress}px)`;
+  };
+
+  const startFlip = (started) => {
+    flip = started;
+    const forward = flip.direction === "next";
+    const [fromLeft, fromRight] = pagesOf(flip.from);
+    const [toLeft, toRight] = pagesOf(flip.to);
+    renderStatic(forward ? fromLeft : toLeft, forward ? toRight : fromRight);
+
+    const div = (className) => Object.assign(document.createElement("div"), { className });
+    const flat = div("book3d-curl-flat");
+    flat.append(slot(forward ? fromRight : fromLeft, forward ? "right" : "left", forward ? W : 0));
+    const flapOuter = div("book3d-curl-outer");
+    const flapClip = div("book3d-curl-clip");
+    const flap = div("book3d-curl-flap");
+    const backFace = face(forward ? toLeft : toRight, forward ? "left" : "right");
+    if (backFace) flap.append(backFace);
+    const bar = Object.assign(document.createElement("span"), { className: "book3d-curl-bar" });
+    flapClip.append(flap, bar);
+    flapOuter.append(flapClip);
+    book.append(flat, flapOuter);
+    layers = { flat, flapOuter, flapClip, flap, bar };
+    paint(flip.mode === "auto" ? bookCorner(flip.direction, W, flip.cornerY) : pull, flip);
+  };
+
+  const finish = (current, commit) => {
+    cancelAnimationFrame(raf);
+    flip = null;
+    if (commit) shown = current.to;
+    showSpread(shown);
+  };
+
+  // Moves the pulled corner from where it is to `target`, then ends the turn as finished or cancelled.
+  const settle = (current, target, commit, duration) => {
+    const start = pull;
+    const began = performance.now();
+    const step = (now) => {
+      const t = duration <= 0 ? 1 : Math.min(1, (now - began) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      paint({ x: start.x + (target.x - start.x) * eased, y: start.y + (target.y - start.y) * eased }, current);
+      if (t < 1) raf = requestAnimationFrame(step);
+      else finish(current, commit);
+    };
+    raf = requestAnimationFrame(step);
+  };
+
+  // A turn started by a button, a key or a click plays by itself.
+  const turnTo = (spread) => {
+    if (flip || spread < 0 || spread >= spreadCount || spread === shown) return;
+    if (reduceMotion) {
+      shown = spread;
+      showSpread(shown);
+      return;
+    }
+    const current = { from: shown, to: spread, direction: spread > shown ? "next" : "prev", cornerY: H, mode: "auto" };
+    startFlip(current);
+    const began = performance.now();
+    const step = (now) => {
+      const t = Math.min(1, (now - began) / AUTO_MS);
+      paint(bookAutoPull(t, current.direction, W, H, current.cornerY), current);
+      if (t < 1) raf = requestAnimationFrame(step);
+      else finish(current, true);
+    };
+    raf = requestAnimationFrame(step);
+  };
+
+  // Enlarging opens a second, bigger book on the same spread, so it can be turned there too.
+  const enlarge = () => {
+    const holder = document.createElement("div");
+    holder.innerHTML = bookMarkup(project, set);
+    const big = holder.firstElementChild;
+    big.classList.add("is-large");
+    big.querySelector('[data-book="enlarge"]').remove();
+    openCarouselLightbox(big, "Enlarged slides");
+    initCaseBook(big, project, set, shown);
+    big.focus();
+  };
+
+  // ---- dragging
+  const local = (event) => {
+    const rect = curlBox.getBoundingClientRect();
+    const offset = flip ? 0 : offsetFor(shown);
+    return { x: event.clientX - rect.left - W - offset, y: event.clientY - rect.top };
+  };
+
+  curlBox.addEventListener("pointerdown", (event) => {
+    if (flip || (event.pointerType === "mouse" && event.button !== 0)) return;
+    press = { id: event.pointerId, x: event.clientX, y: event.clientY, started: false };
+  });
+
+  curlBox.addEventListener("pointermove", (event) => {
+    if (!press || press.id !== event.pointerId) return;
+    const dx = event.clientX - press.x;
+    const dy = event.clientY - press.y;
+    if (!press.started) {
+      if (Math.hypot(dx, dy) < 7) return;
+      const origin = local({ clientX: press.x, clientY: press.y });
+      const direction = origin.x > 0 && dx < 0 && shown + 1 < spreadCount ? "next" : origin.x < 0 && dx > 0 && shown > 0 ? "prev" : null;
+      if (direction === null || Math.abs(dx) < Math.abs(dy) * 0.6) {
+        if (Math.abs(dy) > Math.abs(dx)) press = null; // a vertical gesture is not a page turn
+        return;
+      }
+      press.started = true;
+      window.getSelection()?.removeAllRanges();
+      curlBox.setPointerCapture(event.pointerId);
+      const cornerY = origin.y < H / 2 ? 0 : H;
+      const c = bookCorner(direction, W, cornerY);
+      pull = bookLimitPull({ x: c.x + dx, y: c.y + dy }, direction, W, cornerY, H);
+      root.classList.add("is-dragging");
+      startFlip({ from: shown, to: direction === "next" ? shown + 1 : shown - 1, direction, cornerY, mode: "drag" });
+      return;
+    }
+    if (!flip || flip.mode !== "drag") return;
+    const c = bookCorner(flip.direction, W, flip.cornerY);
+    paint({ x: c.x + dx, y: c.y + dy }, flip);
+  });
+
+  const endPress = (event) => {
+    if (!press || press.id !== event.pointerId) return;
+    const { started, x, y } = press;
+    press = null;
+    root.classList.remove("is-dragging");
+    if (!started) {
+      // a plain click on a page turns it
+      if (event.type === "pointerup" && !flip) turnTo(local({ clientX: x, clientY: y }).x > 0 ? shown + 1 : shown - 1);
+      return;
+    }
+    if (!flip || flip.mode !== "drag") return;
+    const commit = flip.direction === "next" ? pull.x < W * 0.5 : pull.x > -W * 0.5;
+    const c = bookCorner(flip.direction, W, flip.cornerY);
+    settle(flip, commit ? { x: flip.direction === "next" ? -W : W, y: flip.cornerY } : c, commit, reduceMotion ? 0 : SETTLE_MS);
+  };
+  curlBox.addEventListener("pointerup", endPress);
+  curlBox.addEventListener("pointercancel", endPress);
+
+  root.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-book]");
+    if (!button) return;
+    if (button.dataset.book === "enlarge") enlarge();
+    else turnTo(shown + (button.dataset.book === "next" ? 1 : -1));
+  });
+  root.addEventListener("keydown", (event) => {
+    if (event.target !== root) return;
+    if (event.key === "ArrowRight") turnTo(shown + 1);
+    else if (event.key === "ArrowLeft") turnTo(shown - 1);
+    else return;
+    event.preventDefault();
+  });
+
+  const layout = () => {
+    if (flip) return;
+    H = Math.max(120, Math.min(stage.clientHeight - 24, (stage.clientWidth / 2 - 14) * 9 / 16));
+    W = (H * 16) / 9;
+    root.style.setProperty("--pw", `${W}px`);
+    root.style.setProperty("--ph", `${H}px`);
+    curlBox.style.width = `${2 * W}px`;
+    curlBox.style.height = `${H}px`;
+    showSpread(shown);
+  };
+
+  new ResizeObserver(layout).observe(stage);
+  layout();
+};
+
+const mountCaseStage = (stage, project, set) => {
+  stage.innerHTML = set.type === "book" ? bookMarkup(project, set) : ringMarkup(project, set);
+  const hint = casePage.querySelector("[data-case-hint]");
+  if (hint) hint.textContent = set.type === "book" ? "Drag a page to turn it" : "Drag to rotate · click to enlarge";
+  if (set.type === "book") initCaseBook(stage.querySelector(".book3d"), project, set);
+  else initCaseCarousel(stage.querySelector(".carousel3d"));
+};
+
+const renderCasePage = (project) => {
+  const at = projects.indexOf(project);
+  const next = [1, 2].map((step) => projects[(at + step) % projects.length]).filter((item) => item !== project);
+  const primaryLink = project.demo
+    ? { href: project.demo, label: "Open the live demo" }
+    : project.repository ? { href: project.repository, label: "View the source on GitHub" } : null;
+  const gallerySets = caseGallerySets(project);
+  const fact = (label, value) => `<div class="case-fact"><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`;
+
+  casePage.innerHTML = `
+    <div class="case-wrap">
+      <nav class="case-bar" aria-label="Case study">
+        <button class="case-back" type="button" data-case-close>← Back to projects</button>
+        <span>Veerachit Mongkol · Case studies</span>
+        <span>${escapeHtml(project.year)}</span>
+      </nav>
+      <header class="case-head">
+        <p class="case-kicker">Case study · ${escapeHtml(project.title)} · ${escapeHtml(project.visualCode)}</p>
+        <h1 id="caseTitle" tabindex="-1">${escapeHtml(project.subtitle)}</h1>
+        <p class="case-deck">${escapeHtml(project.shortDescription)}</p>
+        <p class="case-byline">By <strong>Veerachit Mongkol</strong> · ${escapeHtml(project.role)} · ${escapeHtml(project.year)}</p>
+      </header>
+      <figure class="case-figure">
+        ${renderCaseStage(project, gallerySets)}
+        <figcaption><span>${escapeHtml(project.title)}</span><span>${caseVideos[project.id] ? `<button class="case-demo-button" type="button" data-case-video>▶ Watch demo</button>` : ""}<span data-case-hint></span></span></figcaption>
+      </figure>
+      <div class="case-layout">
+        <div class="case-main">
+          <div class="case-columns">
+            <p>${escapeHtml(project.problem)}</p>
+            <p>${escapeHtml(project.projectScope)}</p>
+          </div>
+          <blockquote class="case-pull"><p class="case-label">Current status</p><p>${escapeHtml(project.currentStatus)}</p></blockquote>
+          <div class="case-lists">
+            <section><h2 class="case-label">My contribution</h2><ol>${project.responsibilities.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section>
+            <section><h2 class="case-label">Technical implementation</h2><ol>${project.technicalImplementation.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ol></section>
+          </div>
+        </div>
+        <aside class="case-facts" aria-label="Project facts">
+          <p class="case-facts-head">How it was built</p>
+          <dl>
+            ${fact("Stack", project.technologies.join(" · "))}
+            ${fact("Role", project.role)}
+            ${fact("Entered", project.year)}
+            ${fact("Team", project.teamType)}
+            ${fact("Status", project.statusLabel)}
+          </dl>
+          <div class="case-related">
+            <p class="case-label">More case studies</p>
+            ${next.map((item) => `<a href="#case/${escapeHtml(item.id)}"><span>${escapeHtml(item.title)}</span><span aria-hidden="true">→</span></a>`).join("")}
+          </div>
+        </aside>
+      </div>
+      <footer class="case-foot">
+        <button class="case-button" type="button" data-case-close>← Back to projects</button>
+        ${primaryLink ? `<a class="case-button case-button-primary" href="${escapeHtml(primaryLink.href)}" target="_blank" rel="noopener noreferrer">${primaryLink.label} →</a>` : ""}
+      </footer>
+    </div>`;
+  const stage = casePage.querySelector(".case-stage");
+  mountCaseStage(stage, project, gallerySets[0]);
+  casePage.querySelectorAll(".carousel3d-tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      casePage.querySelectorAll(".carousel3d-tab").forEach((other) => {
+        other.classList.toggle("is-active", other === tab);
+        other.setAttribute("aria-pressed", String(other === tab));
+      });
+      mountCaseStage(stage, project, gallerySets[Number(tab.dataset.set)]);
+    });
+  });
+  casePage.querySelector("[data-case-video]")?.addEventListener("click", () => openCaseVideo(caseVideos[project.id], project.title));
+};
+
+// A case study is a page of its own, addressed as #case/<id>, so the browser's back button works.
+const syncCaseRoute = () => {
+  const match = location.hash.match(/^#case\/(.+)$/);
+  const project = match && projects.find((item) => item.id === decodeURIComponent(match[1]));
+  const isOpen = document.body.classList.contains("case-open");
+
+  if (project) {
+    if (!isOpen) caseReturnY ??= window.scrollY;
+    renderCasePage(project);
+    casePage.hidden = false;
+    document.body.classList.add("case-open");
+    document.title = `${project.title} — case study | Veerachit Mongkol`;
+    window.scrollTo(0, 0);
+    document.getElementById("caseTitle").focus({ preventScroll: true });
+  } else if (isOpen) {
+    casePage.hidden = true;
+    casePage.innerHTML = "";
+    document.body.classList.remove("case-open");
+    document.title = pageTitle;
+    if (caseReturnY === null) document.getElementById("projects").scrollIntoView();
+    else window.scrollTo(0, caseReturnY);
+    caseReturnY = null;
+  }
+};
+
+const closeCaseStudy = () => {
+  history.replaceState(null, "", location.pathname + location.search);
+  syncCaseRoute();
+};
+
+const openCaseStudy = (projectId) => {
+  if (projects.some((item) => item.id === projectId)) location.hash = `case/${projectId}`;
 };
 
 // Clicking a folder tab scrolls its card to the top of the stack so it opens in full.
@@ -456,7 +1089,7 @@ projectGrid.addEventListener("keydown", (event) => {
 const tiltReset = ["--tx", "--ty", "--sx", "--sy", "--mx", "--my", "--glow"];
 
 if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  projectGrid.addEventListener("pointermove", (event) => {
+  document.addEventListener("pointermove", (event) => {
     const tile = event.target.closest(".project-visual-tilt");
     if (!tile) return;
     const rect = tile.getBoundingClientRect();
@@ -471,7 +1104,7 @@ if (window.matchMedia("(hover: hover) and (pointer: fine)").matches && !window.m
     tile.style.setProperty("--glow", "1");
   });
 
-  projectGrid.addEventListener("pointerout", (event) => {
+  document.addEventListener("pointerout", (event) => {
     const tile = event.target.closest(".project-visual-tilt");
     if (!tile || tile.contains(event.relatedTarget)) return;
     tiltReset.forEach((name) => tile.style.removeProperty(name));
@@ -495,13 +1128,15 @@ document.addEventListener("click", (event) => {
   if (trigger) openCaseStudy(trigger.dataset.projectId);
 });
 
-document.getElementById("dialogClose").addEventListener("click", () => caseDialog.close());
-caseDialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
-caseDialog.addEventListener("click", (event) => {
-  const rect = caseDialog.getBoundingClientRect();
-  const inside = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
-  if (!inside) caseDialog.close();
+casePage.addEventListener("click", (event) => {
+  if (event.target.closest("[data-case-close]")) closeCaseStudy();
 });
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && document.body.classList.contains("case-open")) closeCaseStudy();
+});
+
+window.addEventListener("hashchange", syncCaseRoute);
 
 const closeMobileNav = () => {
   mobileNav.classList.remove("is-open");
@@ -543,6 +1178,7 @@ window.addEventListener("scroll", updateHeaderBackground, { passive: true });
 document.getElementById("currentYear").textContent = new Date().getFullYear();
 renderProjects();
 renderExperience();
+syncCaseRoute();
 
 if (window.createCrosshair && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
   createCrosshair({
