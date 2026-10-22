@@ -29,7 +29,7 @@ const projects = [
     categories: ["full-stack", "back-end", "ai-cv", "leadership"],
     currentStatus: "The end-to-end voice, retrieval, character, and admin workflows are functional as an academic system. No production deployment or usage volume is claimed.",
     visualCode: "VOICE / RAG",
-    tilt: { src: "assets/ditc-cat.webp", background: "#ffffff" }
+    tilt: { src: "assets/ditc-cat.webp", background: "#ffffff", scale: 0.8 }
   },
   {
     id: "dear-days",
@@ -61,7 +61,7 @@ const projects = [
     categories: ["full-stack", "back-end"],
     currentStatus: "Completed as a team project. Contributions are described by area and do not imply sole ownership of the entire application.",
     visualCode: "DATA / 3D",
-    tilt: { src: "assets/dear-days-book.webp", background: "#ffffff" }
+    tilt: { src: "assets/dear-days-book.webp", background: "#ffffff", scale: 0.7 }
   },
   {
     id: "lampang-smart-city",
@@ -125,7 +125,7 @@ const projects = [
     categories: ["ai-cv"],
     currentStatus: "Completed as a standalone webcam demonstration. It is separate from the Lampang platform and is not connected to municipal cameras.",
     visualCode: "YOLO / LIVE",
-    tilt: { src: "assets/crowdlens.webp", background: "#ffffff", scale: 0.75 }
+    tilt: { src: "assets/crowdlens.webp", background: "#ffffff", scale: 0.6 }
   },
   {
     id: "classsync",
@@ -221,7 +221,7 @@ const projects = [
     categories: ["full-stack", "back-end"],
     currentStatus: "Completed as a course project. Payment is simulated; no production payment or booking provider is connected.",
     visualCode: "BOOK / API",
-    tilt: { src: "assets/aeris.webp", background: "#ffffff", scale: 0.7 }
+    tilt: { src: "assets/aeris.webp", background: "#ffffff", scale: 0.58 }
   },
   {
     id: "chiang-mai-smart-city",

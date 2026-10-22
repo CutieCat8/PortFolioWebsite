@@ -2082,3 +2082,31 @@ img {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* ---------- Wider project folders ----------
+   Each folder runs from the filter buttons' left edge to the right edge of the nav links, and keeps its tab;
+   the stack still overlaps on scroll. To go back to the centred folders, delete this block. */
+.projects.section {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.projects > .section-heading,
+.projects > .project-filters {
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.project-card {
+  /* the whole folder (tab, box, content) moves in together; % is the width of the grid, i.e. the screen */
+  margin-left: max(var(--gutter), calc((100% - var(--max-width)) / 2 + var(--gutter)));
+  margin-right: var(--gutter);
+}
+
+@media (min-width: 981px) {
+  /* a narrower picture box: its left edge moves in towards the right */
+  .project-card {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+  }
+}
