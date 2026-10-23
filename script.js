@@ -181,14 +181,20 @@ const projects = [
     projectScope: "A completed front-end website covering a landing page, a menu page with categories and item details, a cart, a receipt, and an order history. Orders are simulated and stored in the browser.",
     role: "Front-End Developer",
     responsibilities: [
-      "Built the landing page with menu highlights and a find-us section.",
-      "Implemented the menu page with category tabs and an item detail view.",
-      "Created the cart, receipt, and order-history screens."
+      "Built the restaurant website on my own, from the first commit to deployment, in plain HTML, CSS, and JavaScript.",
+      "Designed and built the landing page with a hero, three branch locations, and a menu preview.",
+      "Built the menu page with a category sidebar, item list, and a detail panel with photos and descriptions.",
+      "Built the cart with checkout, receipt, and order history.",
+      "Made the site responsive with a mobile navigation menu.",
+      "Deployed the site to Azure Static Web Apps through a GitHub Actions workflow."
     ],
     technicalImplementation: [
-      "Kept the menu in a single data module that the menu, cart, and receipt screens all read from.",
-      "Persisted the cart and order history in localStorage, with a cart badge that stays in sync across pages.",
-      "Deployed as a static site on Azure Static Web Apps through a GitHub Actions workflow."
+      "Kept all menu data in a single data file shared by the menu, cart, and receipt.",
+      "Persisted the cart and order history in localStorage, with a cart badge that updates on every page.",
+      "Made category selection linkable with the URL hash, so a menu category can be opened directly.",
+      "Wrote storage reads defensively, so corrupted or missing saved data falls back to an empty cart.",
+      "Formatted prices in Thai baht and generated an order ID and timestamp for each receipt.",
+      "Added accessible mobile navigation (aria-expanded) and a header that changes style on scroll."
     ],
     technologies: ["HTML", "CSS", "JavaScript", "Azure Static Web Apps"],
     status: "Completed front-end website",
