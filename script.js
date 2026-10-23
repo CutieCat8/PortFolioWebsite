@@ -121,14 +121,18 @@ const projects = [
     projectScope: "An independently developed live demonstration presented at CAMT Job Fair using a local webcam rather than municipal infrastructure.",
     role: "Independent Developer",
     responsibilities: [
-      "Built the project independently from webcam capture through monitoring and alerts.",
-      "Implemented person detection, line-crossing counts, and a live monitoring dashboard.",
-      "Added opt-in LINE notifications for crowd-density events and resolved Windows webcam capture issues."
+      "Built the project solo, from webcam capture to alerts.",
+      "Built the people-counting pipeline with YOLOv8 and ByteTrack, covering both crowd density and in/out line crossings.",
+      "Designed and built a real-time dashboard with a live annotated video feed, KPIs, and an alert feed.",
+      "Built opt-in LINE alerts that ask the operator for confirmation before broadcasting.",
+      "Wrote the setup guide, API reference, and README with screenshots."
     ],
     technicalImplementation: [
-      "Used YOLOv8 and OpenCV to process webcam frames and track detected people.",
-      "Prevented the same track from being counted repeatedly across frames.",
-      "Connected density events to the LINE Messaging API for subscribed notifications."
+      "Triggered an alert only after the count stayed above the threshold for several consecutive frames, then re-armed it once the count dropped below a hysteresis band.",
+      "Prevented the same tracked person from being counted twice at the line.",
+      "Ran the camera loop in a worker thread with lock-protected shared state, separating the Flask dashboard from YOLO and the camera.",
+      "Streamed annotated video to the browser as MJPEG and exposed live data through a small JSON API.",
+      "Made thresholds, line position, and camera source configurable in config.yaml, with an alert cooldown."
     ],
     technologies: ["Python", "YOLOv8", "OpenCV", "LINE Messaging API"],
     status: "Completed live demonstration",
