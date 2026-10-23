@@ -85,14 +85,18 @@ const projects = [
     projectScope: "An in-development collaboration between CAMT, Lampang Municipality, and Pyramid Solution, covering reporting APIs and a planned computer-vision integration.",
     role: "Back-End & Computer Vision Developer",
     responsibilities: [
-      "Developed database structures and REST API endpoints for safety reports.",
-      "Built monthly summaries and event comparisons for an officer reporting interface.",
-      "Developed a Python and YOLOv8 line-crossing counter with configurable sources and counting coordinates."
+      "Designed the safety-report data model for logging hazards with location, type, photo, and status.",
+      "Built the monthly report and period-comparison API endpoints, combining people counts with safety reports.",
+      "Built the officer interface's Reports page for monthly summaries and period comparisons.",
+      "Built a YOLOv8 and ByteTrack line-crossing counter that counts people entering and leaving from an RTSP camera.",
+      "Set up YOLOv8n people counting and validated its accuracy against hand-counted ground truth."
     ],
     technicalImplementation: [
-      "Prepared RTSP source configuration and coordinate-based line counting for planned integration.",
-      "Used development footage to investigate camera-angle and coordinate-calibration constraints.",
-      "Kept reporting APIs and computer-vision processing as separately testable responsibilities."
+      "Counted a crossing only when a tracked person's foot point changed sides of the line, using a dead zone and per-track memory to avoid double counts.",
+      "Reconnected dropped RTSP streams automatically with exponential backoff.",
+      "Added night-footage contrast enhancement and a region mask to ignore blocked areas.",
+      "Made the camera, counting line, and model configurable, with a video-file mode for testing without a live camera.",
+      "Indexed safety reports by status, type, and date, and wrote tests for the line-crossing logic."
     ],
     technologies: ["Python", "YOLOv8", "REST API", "Database Design", "RTSP"],
     status: "Project under development",
