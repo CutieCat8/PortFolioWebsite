@@ -149,14 +149,18 @@ const projects = [
     projectScope: "A functional front-end prototype, previously named TMA Dashboard, with local and mock data rather than production authentication or a deployed back end.",
     role: "Creator & Front-End Developer",
     responsibilities: [
-      "Built role-based student and instructor interfaces.",
-      "Combined announcements, assignments, submission status, and appointments.",
-      "Implemented recurring schedules, pre-booking availability checks, submission verification, and reasoned override records."
+      "Built the project solo, from first commit to final redesign.",
+      "Designed and built separate student and instructor dashboards with role-based routing.",
+      "Built a cross-role announcement system with a live-preview composer.",
+      "Built a personal schedule with recurring weekly courses and .ics import.",
+      "Built an instructor scheduler that shows each student's Busy/Available status before booking an appointment.",
+      "Built a consistency analytics page powered by Google Sheets data."
     ],
     technicalImplementation: [
-      "Created pure recurrence and conflict-detection logic that reports Busy or Available before an appointment is created.",
-      "Structured front-end state for course schedules and role-specific workflows.",
-      "Added automated tests around core scheduling behavior with Vitest."
+      "Wrote the recurrence and conflict engine as pure functions that return every overlapping course and meeting.",
+      "Organized the code into feature-based folders, each owning its pages, components, and logic.",
+      "Covered scheduling, date handling, validation, and .ics parsing with Vitest unit tests.",
+      "Added a GitHub Actions workflow that runs type-check, tests, and build."
     ],
     technologies: ["React", "Vite", "Tailwind CSS", "Vitest"],
     status: "Functional front-end prototype",
