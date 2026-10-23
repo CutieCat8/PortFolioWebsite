@@ -266,17 +266,23 @@ const projects = [
     subtitle: "CCTV Monitoring Dashboard",
     shortDescription: "An academic officer and citizen dashboard prototype shaped around limited partner-provided violation imagery and metadata.",
     problem: "City officers and residents need clearer workflows for reviewing events and understanding how municipal information could be presented.",
-    projectScope: "An academic prototype developed through CAMT and CAS Cogniser Thailand. The connected data was limited to violation images and selected metadata.",
+    projectScope: "An academic prototype developed in collaboration with Chiang Mai City Municipality (the \"partner\" below), through CAMT and CAS Cogniser Thailand. The connected data was limited to violation images and selected metadata.",
     role: "Idea Initiator, Project Manager & Developer",
     responsibilities: [
-      "Initiated the concept, managed project scope, and defined officer and citizen workflows.",
-      "Developed React and TypeScript event-review and live-monitoring modules.",
-      "Connected a limited partner webhook and transformed violation imagery and equipment metadata for display."
+      "Came up with the idea, managed the project scope, and planned how officers and residents would use the system.",
+      "Built the part of the system that received violation images and details from the partner and showed them to officers on the dashboard.",
+      "Built a live monitoring page where officers watch city cameras and see the events for the camera they pick.",
+      "Built an events page where officers can filter events by type and open the details of each one.",
+      "Built a public page for residents with a city map, air quality and weather for their area, announcements, and a way to report problems.",
+      "Redesigned the officer and resident pages to look clean and simple, with light and dark modes."
     ],
     technicalImplementation: [
-      "Mapped incoming webhook records into reviewable dashboard events.",
-      "Separated the limited partner data from prototype traffic, public-camera, and civic information datasets.",
-      "Built responsive dashboard modules with React, TypeScript, routing, and chart components."
+      "Turned the partner's violation reports into events that officers could review. The partner has since stopped sending data, so the demo now runs on sample data.",
+      "Showed live camera video in the browser, and marked any camera that stopped working as OFFLINE.",
+      "Pulled air quality and weather from three public sources so residents see the numbers for their own area.",
+      "Let residents switch the city map between traffic and air quality.",
+      "Kept the real data from the partner clearly separate from the sample traffic, camera, and city information used for the demo.",
+      "Put the website online with Vercel so it can be opened from any browser."
     ],
     technologies: ["React", "TypeScript", "Vite", "Webhook", "Recharts"],
     status: "Academic prototype",
