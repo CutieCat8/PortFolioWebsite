@@ -343,13 +343,15 @@ const projects = [
     role: "Front-End Developer & Idea Initiator",
     responsibilities: [
       "Initiated and co-developed the marketplace concept connecting farmers with buyers.",
-      "Designed front-end UI, user flows, and interactions.",
+      "Designed the marketplace front end, including a home page with search and farm-type filters and a farm profile page.",
+      "Designed the user flows for farm registration, farm storytelling, search and sorting, and direct chat between buyer and farm.",
       "Contributed to product direction and feature strategy during the hackathon."
     ],
     technicalImplementation: [
-      "Translated the marketplace concept into navigable front-end flows.",
-      "Focused implemented work on interface structure and interactions.",
-      "AI, IoT, QR traceability, and cold-chain logistics remain proposed ideas unless separately evidenced."
+      "The concept let each farm tell its story, and let buyers trace produce back to its source by scanning a QR code.",
+      "It also proposed cold-chain delivery with temperature monitoring, live tracking, alerts, and route planning to keep produce fresh.",
+      "The business model covered platform commissions, delivery and cold-chain fees, and premium services for farms, starting with business buyers such as malls, hotels, and hospitals.",
+      "AI, IoT, QR traceability, and cold-chain logistics were proposed ideas and were not built."
     ],
     technologies: ["Front-End UI", "User Flows", "Product Strategy", "Prototyping"],
     status: "Hackathon concept / prototype",
