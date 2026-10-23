@@ -8,14 +8,20 @@ const projects = [
     projectScope: "A functional academic voice-AI system covering a character interface, streaming audio bridge, knowledge retrieval, and an authenticated administration workflow.",
     role: "Lead Full-Stack & AI Developer",
     responsibilities: [
-      "Developed the FastAPI WebSocket audio bridge for multi-turn Gemini Live conversations.",
-      "Built the React character interface and managed microphone and session lifecycles to reduce audio feedback.",
-      "Created the CAMT and DITC knowledge pipeline and an authenticated administration workflow."
+      "Built a FastAPI WebSocket voice bridge streaming audio between the browser and Gemini Live for multi-turn spoken conversations.",
+      "Designed and built a React + TypeScript character interface for tablets with wake-word activation.",
+      "Implemented lip synchronization with Thai-language support.",
+      "Built a knowledge pipeline that crawls CAMT and DITC sources, then chunks, embeds, and indexes the content.",
+      "Designed and built a React + Material UI admin dashboard for managing documents, triggering syncs, testing chat, and viewing analytics.",
+      "Designed the PostgreSQL schema and set up Docker Compose, CI, and a pytest suite."
     ],
     technicalImplementation: [
-      "Combined semantic vector retrieval with keyword search over a PostgreSQL and pgvector knowledge base.",
-      "Implemented character conversation states and lip synchronization driven by streaming audio and viseme fallbacks.",
-      "Protected knowledge-base management and conversation analytics with JWT-based admin access."
+      "Combined semantic (pgvector) and keyword search, scoping answers to DITC and CAMT topics.",
+      "Used content-hash upserts so only changed pages are re-indexed.",
+      "Used half-duplex turn-taking to prevent speaker output feeding back into the microphone.",
+      "Decoupled sessions from WebSocket connections so dropped connections can reconnect.",
+      "Stored only session metadata for analytics, with no audio or raw transcripts retained.",
+      "Secured admin features with JWT authentication and bcrypt-hashed passwords."
     ],
     technologies: ["Python", "FastAPI", "React", "PostgreSQL", "pgvector", "Gemini Live", "WebSocket"],
     status: "Completed academic prototype",
