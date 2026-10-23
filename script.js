@@ -46,14 +46,21 @@ const projects = [
     projectScope: "A completed team project spanning authentication, memories, rooms, friendships, private storage, readers, and a 3D presentation layer.",
     role: "Full-Stack Developer / Primary Contributor",
     responsibilities: [
-      "Developed the Supabase-backed data layer, schema migrations, and workflows for memories, rooms, friendships, and media.",
-      "Built private profile-media flows and contributed friend, room, monthly, yearbook, and highlight interactions.",
-      "Implemented the interactive 3D museum and memory-to-frame assignment workflow as part of a team project."
+      "Led a three-person team as project owner, responsible for the architecture and back end.",
+      "Set up the Next.js and TypeScript foundation, shared data contracts, and fixtures that let the team build against mock data.",
+      "Built the Supabase back end: Auth, Postgres schema, RLS policies, RPCs, and private Storage with signed URLs.",
+      "Built the interactive 3D museum room with React Three Fiber, including the frame picker that lets members choose which memory hangs in each frame.",
+      "Built the Monthly, Yearbook, and Highlights flipbook reader with personal favourites.",
+      "Designed and built the sign-in screen, room create/edit page, dithered room covers, calendar gallery, and profile photo uploads with cropping.",
+      "Added a view-only demo account and a GitHub Actions pipeline for lint, type-check, tests, and build."
     ],
     technicalImplementation: [
-      "Used Row Level Security and private storage policies to constrain access to personal and room media.",
-      "Tightened database privileges and used database functions for multi-step writes that must succeed together.",
-      "Separated application contracts from mock and Supabase data adapters to support testable integration."
+      "Used Row Level Security and private storage policies so only room members can read a room's memories and media.",
+      "Hardened database permissions and covered the friends permission rules with database tests.",
+      "Used database functions for multi-step writes that must succeed together.",
+      "Separated the data contracts from mock and Supabase data sources, so the UI runs unchanged in either mode.",
+      "Reduced page-load overhead with a local session check, per-request clients, and parallel page queries.",
+      "Validated memory input with Zod and made the date picker block future days."
     ],
     technologies: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "React Three Fiber"],
     status: "Completed project",
