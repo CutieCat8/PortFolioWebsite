@@ -219,14 +219,20 @@ const projects = [
     projectScope: "A completed full-stack course project covering authentication, round-trip selection, seats, simulated payment, booking records, and e-tickets.",
     role: "Full-Stack Developer",
     responsibilities: [
-      "Implemented authentication and the round-trip flight selection and checkout flow.",
-      "Built seat selection, simulated payment, and e-ticket generation.",
-      "Developed server-side confirmation logic that re-checks price and seat availability before creating a booking."
+      "Designed the entire website UI and owned the booking and checkout flow in a three-person team.",
+      "Built the booking flow end to end, from flight results to seat selection, simulated payment, and confirmation.",
+      "Built an interactive seat map with premium rows and per-seat pricing.",
+      "Built the e-ticket as a printable boarding pass, plus a My Bookings page.",
+      "Built the flight search back end and seed data for a global flight network.",
+      "Built Thai and English language switching and a payment-method page for saving a card or PromptPay."
     ],
     technicalImplementation: [
-      "Used Express services and SQLite persistence behind JWT-protected account workflows.",
-      "Recalculated booking totals from database values rather than trusting browser state.",
-      "Returned a conflict response when a selected seat was no longer available."
+      "Re-validated the flight price and seat availability inside a database transaction, so tampered client requests cannot change the total.",
+      "Rolled back the entire booking if any seat failed, returning a 409 conflict for taken seats.",
+      "Calculated the premium seat fee on the server.",
+      "Restricted booking and e-ticket lookups to the owning account on the server.",
+      "Never stored the CVV when saving a payment method; users re-enter it at checkout.",
+      "Modelled a round trip as two bookings, one per leg, each with its own seat selection."
     ],
     technologies: ["Node.js", "Express", "SQLite", "JWT", "JavaScript"],
     status: "Completed course project",
