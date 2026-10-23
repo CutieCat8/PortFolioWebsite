@@ -259,13 +259,15 @@ const projects = [
     title: "Smart-FLEMA",
     subtitle: "ICT Startup Competition 2026",
     shortDescription: "An international smart-city business concept exploring crowd management and public-safety workflows.",
+    award: "Winning the Audience Popular Vote Award.",
     problem: "Large public events need clearer ways to anticipate crowd pressure and coordinate safer movement through shared urban spaces.",
     projectScope: "A hackathon concept developed with an international team at the International College of Technology in Kanazawa, Japan.",
     role: "CAMT Representative & Idea Contributor",
     responsibilities: [
       "Collaborated with international team members on a smart-city business idea.",
       "Helped define the problem, proposed user workflows, and feasibility considerations.",
-      "Contributed to the final pitch and presentation."
+      "Contributed to the final pitch and presentation.",
+      "Won the Audience Popular Vote Award at the ICT Startup Competition 2026."
     ],
     technicalImplementation: [
       "The concept proposed crowd-management and public-safety workflows.",
@@ -282,7 +284,7 @@ const projects = [
     images: [{src: "assets/JapanCompett.png", alt: "Veerachit and team presenting at the ICT Startup Competition 2026 in Kanazawa"}],
     featured: false,
     categories: ["leadership"],
-    currentStatus: "Concept and pitch only. There was no functional software prototype, production system, or live data integration.",
+    currentStatus: "Concept and pitch only, awarded the Audience Popular Vote Award at the ICT Startup Competition 2026. There was no functional software prototype, production system, or live data integration.",
     visualCode: "IDEA / PITCH"
   },
   {
@@ -1002,7 +1004,9 @@ const renderCasePage = (project) => {
       <header class="case-head">
         <p class="case-kicker">Case study · ${escapeHtml(project.title)} · ${escapeHtml(project.visualCode)}</p>
         <h1 id="caseTitle" tabindex="-1">${escapeHtml(project.subtitle)}</h1>
-        <p class="case-deck">${escapeHtml(project.shortDescription)}</p>
+        ${project.award
+          ? `<blockquote class="case-quote"><span class="quote-mark" aria-hidden="true">“</span>${escapeHtml(project.shortDescription)}<span class="quote-mark" aria-hidden="true">”</span></blockquote><p class="case-deck">${escapeHtml(project.award)}</p>`
+          : `<p class="case-deck">${escapeHtml(project.shortDescription)}</p>`}
         <p class="case-byline">By <strong>Veerachit Mongkol</strong> · ${escapeHtml(project.role)} · ${escapeHtml(project.year)}</p>
       </header>
       <figure class="case-figure">
