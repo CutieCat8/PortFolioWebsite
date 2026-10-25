@@ -456,7 +456,7 @@ const experienceCard = (project, index) => `
       <p>${escapeHtml(project.shortDescription)}</p>
     </div>
     <div class="experience-role"><span>Role</span><p>${escapeHtml(project.role)}</p></div>
-    <button class="round-button case-study-button" type="button" data-project-id="${escapeHtml(project.id)}" aria-label="View ${escapeHtml(project.title)} case study"><span aria-hidden="true">↗</span></button>
+    <button class="round-button case-study-button" type="button" data-project-id="${escapeHtml(project.id)}" aria-label="View ${escapeHtml(project.title)} case study"><span aria-hidden="true">↗&#xFE0E;</span></button>
   </article>`;
 
 const renderProjects = () => {

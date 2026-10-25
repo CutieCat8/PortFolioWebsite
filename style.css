@@ -1039,7 +1039,9 @@ img {
   background: transparent;
   color: var(--white);
   cursor: pointer;
+  font-family: var(--mono);
   font-size: 1.2rem;
+  font-variant-emoji: text;
   transition: background-color 160ms ease, color 160ms ease;
 }
 
@@ -1176,7 +1178,7 @@ img {
   padding: 18px 0;
   border-bottom: 1px solid var(--line-light);
   display: grid;
-  grid-template-columns: 90px minmax(0, 1fr);
+  grid-template-columns: 90px minmax(0, 1fr) auto;
   gap: 18px;
   text-decoration: none;
   overflow-wrap: anywhere;
@@ -1188,6 +1190,15 @@ img {
 
 .contact-details span {
   color: rgba(255, 253, 247, 0.62);
+}
+
+.contact-details span[aria-hidden] {
+  align-self: start;
+  justify-self: end;
+  color: inherit;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0;
 }
 
 .site-footer {
@@ -2066,8 +2077,12 @@ img {
   }
 
   .contact-details a {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 4px;
+  }
+
+  .contact-details a > span:first-child {
+    grid-column: 1 / -1;
   }
 
   .site-footer {
