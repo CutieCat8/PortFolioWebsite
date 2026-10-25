@@ -1042,7 +1042,11 @@ img {
   font-family: var(--mono);
   font-size: 1.2rem;
   font-variant-emoji: text;
-  transition: background-color 160ms ease, color 160ms ease;
+  line-height: 1;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;  transition: background-color 160ms ease, color 160ms ease;
 }
 
 .round-button:hover {
@@ -1196,7 +1200,8 @@ img {
   align-self: start;
   justify-self: end;
   color: inherit;
-  font-family: inherit;
+  font-family: var(--mono);
+  font-variant-emoji: text;
   font-size: 1rem;
   letter-spacing: 0;
 }
@@ -2086,8 +2091,8 @@ img {
   }
 
   .site-footer {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    gap: 12px;
   }
 
   .case-layout,
